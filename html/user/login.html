@@ -68,11 +68,6 @@
 <script src="../../res/js/vue.js"></script>
 
 <script>
-    new Vue({
-        el: "#app",
-        data: {},
-        methods: {}
-    })
 
     layui.cache.page = 'user';
     layui.cache.user = {
@@ -87,7 +82,21 @@
         , base: '../../res/mods/'
     }).extend({
         fly: 'index'
-    }).use('fly');
+    }).use('fly', () => {
+
+        new Vue({
+            el: "#app",
+            data: {},
+            methods: {},
+            created() {
+                // console.log(fly);
+                console.log(layui.fly.json);
+            }
+        })
+
+    });
+
+
 </script>
 
 </body>

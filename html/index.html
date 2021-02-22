@@ -803,14 +803,6 @@
 <script src="../res/js/vue.js"></script>
 
 <script>
-    new Vue({
-        el: "#app",
-        data: {
-            author: "Youngsun Li"
-        },
-        methods: {}
-    })
-
     layui.cache.page = '';
     layui.cache.user = {
         username: '游客'
@@ -824,7 +816,16 @@
         , base: '../res/mods/' //这里实际使用时，建议改成绝对路径
     }).extend({
         fly: 'index'
-    }).use('fly');
+    }).use('fly', () => {
+
+        new Vue({
+            el: "#app",
+            data: {
+                author: "Youngsun Li"
+            },
+            methods: {}
+        })
+    });
 </script>
 
 </body>
