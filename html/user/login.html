@@ -28,7 +28,7 @@
         <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
           <div class="layui-tab-item layui-show">
             <div class="layui-form layui-form-pane">
-              <form method="post">
+              <form onsubmit="return false">
                 <div class="layui-form-item">
                   <label class="layui-form-label" for="L_email">邮箱</label>
                   <div class="layui-input-inline">
@@ -45,7 +45,7 @@
                   </div>
                 </div>
                 <div class="layui-form-item">
-                  <button class="layui-btn" lay-filter="*" lay-submit>立即登录</button>
+                  <button class="layui-btn" @click="login()">立即登录</button>
                   <span style="padding-left:20px;">
                   <a href="forget.html">忘记密码？</a>
                 </span>
@@ -87,7 +87,20 @@
         new Vue({
             el: "#app",
             data: {},
-            methods: {},
+            methods: {
+                login() {
+                    layui.fly.ajax(
+                        "http://localhost:8081/users/token",
+                        {
+                            phone: "18677434737",
+                            password: "123456"
+                        },
+                        res => {
+                            console.log(res.token);
+                        }
+                    )
+                }
+            },
             created() {
                 // console.log(fly);
                 console.log(layui.fly.json);
