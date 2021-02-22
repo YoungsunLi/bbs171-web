@@ -1,12 +1,9 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <title>帐号设置</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="keywords" content="fly,layui,前端社区">
-  <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
   <link rel="stylesheet" href="../../res/layui/css/layui.css">
   <link rel="stylesheet" href="../../res/css/global.css">
 </head>
@@ -15,7 +12,7 @@
 <div class="fly-header layui-bg-black">
   <div class="layui-container">
     <a class="fly-logo" href="/">
-      <img src="../../res/images/logo.png" alt="layui">
+      <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
       <li class="layui-nav-item layui-this">
@@ -28,7 +25,7 @@
         <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
       </li>
     </ul>
-    
+
     <ul class="layui-nav fly-nav-user">
       <!-- 登入后的状态 -->
       <li class="layui-nav-item">
@@ -82,13 +79,13 @@
     <i class="layui-icon">&#xe602;</i>
   </div>
   <div class="site-mobile-shade"></div>
-  
+
   <div class="site-tree-mobile layui-hide">
     <i class="layui-icon">&#xe602;</i>
   </div>
   <div class="site-mobile-shade"></div>
-  
-  
+
+
   <div class="fly-panel fly-panel-user" pad20>
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title" id="LAY_mine">
@@ -135,7 +132,7 @@
               <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认修改</button>
             </div>
           </div>
-          
+
           <div class="layui-form layui-form-pane layui-tab-item">
             <div class="layui-form-item">
               <div class="avatar-add">
@@ -148,7 +145,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="layui-form layui-form-pane layui-tab-item">
             <form action="/user/repass" method="post">
               <div class="layui-form-item">
@@ -175,14 +172,14 @@
               </div>
             </form>
           </div>
-          
+
           <div class="layui-form layui-form-pane layui-tab-item">
             <ul class="app-bind">
               <li class="fly-msg app-havebind">
                 <i class="iconfont icon-qq"></i>
                 <span>已成功绑定，您可以使用QQ帐号直接登录Fly社区，当然，您也可以</span>
                 <a href="javascript:;" class="acc-unbind" type="qq_id">解除绑定</a>
-                
+
                 <!-- <a href="" onclick="layer.msg('正在绑定微博QQ', {icon:16, shade: 0.1, time:0})" class="acc-bind" type="qq_id">立即绑定</a>
                 <span>，即可使用QQ帐号登录Fly社区</span> -->
               </li>
@@ -190,7 +187,7 @@
                 <i class="iconfont icon-weibo"></i>
                 <!-- <span>已成功绑定，您可以使用微博直接登录Fly社区，当然，您也可以</span>
                 <a href="javascript:;" class="acc-unbind" type="weibo_id">解除绑定</a> -->
-                
+
                 <a href="" class="acc-weibo" type="weibo_id"  onclick="layer.msg('正在绑定微博', {icon:16, shade: 0.1, time:0})" >立即绑定</a>
                 <span>，即可使用微博帐号登录Fly社区</span>
               </li>
@@ -204,12 +201,7 @@
 </div>
 
 <div class="fly-footer">
-  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
-  <p>
-    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
-    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
-    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
-  </p>
+  <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
 </div>
 
 <script src="../../res/layui/layui.js"></script>
