@@ -1,11 +1,4 @@
-﻿/**
-
- @Name: Fly社区主入口
-
- */
-
-
-layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
+﻿layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
 
   var $ = layui.jquery
   ,layer = layui.layer
@@ -82,7 +75,7 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
       });
     },
 
-    ajax: function(url, data, success, options){
+    api: function(url, data, success, options){
       const type = typeof data === 'function';
 
       if(type){
@@ -97,17 +90,20 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
         type: options.type || 'post',
         dataType: options.dataType || 'json',
         contentType: options.contentType || 'application/json;charset=utf-8',
-        data: JSON.stringify(data),
+        headers: {
+          "Authorization": sessionStorage.getItem("token")
+        },
         url: url,
+        data: options.type === 'get' ? data : JSON.stringify(data),
         success: function(res){
           if(res.success === true) {
             success && success(res);
           } else {
-            layer.msg(res.msg || res.code, {shift: 6});
+            layer.msg(res.msg || res.code, {icon: 5, anim: 6});
             options.error && options.error();
           }
         }, error: function(e){
-          layer.msg('请求异常，请重试', {shift: 6});
+          layer.msg('请求异常, 请重试!', {icon: 5, anim: 6});
           options.error && options.error(e);
         }
       });

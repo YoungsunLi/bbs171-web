@@ -8,107 +8,88 @@
   <link href="../../res/css/global.css" rel="stylesheet">
 </head>
 <body>
-<div id="app">
 
-  <div class="fly-header layui-bg-black">
-    <div class="layui-container">
-      <a class="fly-logo" href="/">
-        <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
-      </a>
-    </div>
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <a class="fly-logo" href="/">
+      <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
+    </a>
   </div>
+</div>
 
-  <div class="layui-container fly-marginTop">
-    <div class="fly-panel fly-panel-user" pad20>
-      <div class="layui-tab layui-tab-brief" lay-filter="user">
-        <ul class="layui-tab-title">
-          <li class="layui-this">登入</li>
-          <li><a href="reg.html">注册</a></li>
-        </ul>
-        <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
-          <div class="layui-tab-item layui-show">
-            <div class="layui-form layui-form-pane">
-              <form onsubmit="return false">
-                <div class="layui-form-item">
-                  <label class="layui-form-label" for="L_email">邮箱</label>
-                  <div class="layui-input-inline">
-                    <input autocomplete="off" class="layui-input" id="L_email" lay-verify="required" name="email"
-                           required
-                           type="text">
-                  </div>
-                </div>
-                <div class="layui-form-item">
-                  <label class="layui-form-label" for="L_pass">密码</label>
-                  <div class="layui-input-inline">
-                    <input autocomplete="off" class="layui-input" id="L_pass" lay-verify="required" name="pass" required
-                           type="password">
-                  </div>
-                </div>
-                <div class="layui-form-item">
-                  <button class="layui-btn" @click="login()">立即登录</button>
-                  <span style="padding-left:20px;">
-                  <a href="forget.html">忘记密码？</a>
-                </span>
-                </div>
-              </form>
+<div class="layui-container fly-marginTop">
+  <div class="fly-panel fly-panel-user" pad20>
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+      <ul class="layui-tab-title">
+        <li class="layui-this">登入</li>
+        <li><a href="reg.html">注册</a></li>
+      </ul>
+      <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+        <div class="layui-form layui-form-pane">
+          <form class="layui-form">
+            <div class="layui-form-item">
+              <label class="layui-form-label" for="L_phone">手机</label>
+              <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="L_phone" lay-verify="required"
+                       name="phone" required type="text" value="">
+              </div>
             </div>
-          </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" for="L_pass">密码</label>
+              <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="L_pass" lay-verify="required"
+                       name="password" required type="password" value="">
+              </div>
+            </div>
+            <div class="layui-form-item">
+              <button class="layui-btn" lay-filter="login" lay-submit>立即登录</button>
+              <span style="padding-left:20px;">
+                  <a href="forget.html">忘记密码？</a>
+              </span>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="fly-footer">
-    <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
-  </div>
-
+<div class="fly-footer">
+  <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
 </div>
 
 <script src="../../res/layui/layui.js"></script>
-<script src="../../res/js/vue.js"></script>
-
 <script>
-
-    layui.cache.page = 'user';
+    layui.cache.page = "user";
     layui.cache.user = {
-        username: '游客'
+        username: "游客"
         , uid: -1
-        , avatar: '../../res/images/avatar/00.jpg'
+        , avatar: "../../res/images/avatar/00.jpg"
         , experience: 83
-        , sex: '男'
+        , sex: "男"
     };
     layui.config({
         version: "3.0.0"
-        , base: '../../res/mods/'
+        , base: "../../res/mods/"
     }).extend({
-        fly: 'index'
-    }).use('fly', () => {
-
-        new Vue({
-            el: "#app",
-            data: {},
-            methods: {
-                login() {
-                    layui.fly.ajax(
-                        "http://localhost:8081/users/token",
-                        {
-                            phone: "18677434737",
-                            password: "123456"
-                        },
-                        res => {
-                            console.log(res.token);
-                        }
-                    )
+        fly: "index"
+    }).use("fly", () => {
+        layui.form.on("submit(login)", function (data) {
+            layui.fly.api(
+                "http://localhost:8081/users/token",
+                data.field,
+                res => {
+                    console.log(res);
+                    sessionStorage.setItem("token", res.token);
+                    layer.msg(res.msg, {icon: 6});
+                    // setTimeout(function () {
+                    //     location.href = "/";
+                    // }, 1500)
                 }
-            },
-            created() {
-                // console.log(fly);
-                console.log(layui.fly.json);
-            }
-        })
-
+            )
+            return false;
+        });
     });
-
 
 </script>
 
