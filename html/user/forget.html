@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>找回密码/重置密码</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../../res/layui/css/layui.css">
-  <link rel="stylesheet" href="../../res/css/global.css">
+  <title>重置密码</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+  <link href="../../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../../res/css/global.css" rel="stylesheet">
 </head>
 <body>
 
@@ -14,28 +14,9 @@
     <a class="fly-logo" href="/">
       <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
     </a>
-    <ul class="layui-nav fly-nav layui-hide-xs">
-      <li class="layui-nav-item layui-this">
-        <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="../case/case.html"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="http://www.layui.com/" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
-      </li>
-    </ul>
-
     <ul class="layui-nav fly-nav-user">
-      <!-- 未登入的状态 -->
       <li class="layui-nav-item">
-        <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="user/login.html">登入</a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="user/reg.html">注册</a>
+        <a href="reg.html">注册</a>
     </ul>
   </div>
 </div>
@@ -45,73 +26,47 @@
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title">
         <li><a href="login.html">登入</a></li>
-        <li class="layui-this">找回密码<!--重置密码--></li>
+        <li class="layui-this">重置密码</li>
       </ul>
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
-          <!-- 重置密码 -->
-          <!--
-          <div class="fly-msg">{{d.username}}，请重置您的密码</div>
-          <div class="layui-form layui-form-pane"  style="margin-top: 30px;">
-            <form action="/user/repass" method="post">
-              <div class="layui-form-item">
-                <label for="L_pass" class="layui-form-label">密码</label>
-                <div class="layui-input-inline">
-                  <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+          <form class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+              <label class="layui-form-label" for="L_phone">手机</label>
+              <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="L_phone" lay-verify="phone"
+                       name="phone" required type="text" value="">
               </div>
-              <div class="layui-form-item">
-                <label for="L_repass" class="layui-form-label">确认密码</label>
-                <div class="layui-input-inline">
-                  <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
-                </div>
+              <div class="layui-form-mid layui-word-aux">请输入您注册的手机号码</div>
+            </div>
+            <div style="margin-bottom: 40px">
+              <label class="layui-form-label">验证码</label>
+              <label class="layui-input-inline" style="width: 121px; ">
+                <input autocomplete="off" class="layui-input" lay-verify="required"
+                       name="code" required type="text" value="">
+              </label>
+              <button class="layui-btn" id="get_code">获取</button>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" for="L_pass">密码</label>
+              <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="L_pass" lay-verify="required" name="password" required
+                       type="password">
               </div>
-              <div class="layui-form-item">
-                <label for="L_vercode" class="layui-form-label">人类验证</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid">
-                  <span style="color: #c00;">{{d.vercode}}</span>
-                </div>
+              <div class="layui-form-mid layui-word-aux">6到16个字符</div>
+            </div>
+            <div class="layui-form-item">
+              <label class="layui-form-label" for="L_repass">确认密码</label>
+              <div class="layui-input-inline">
+                <input autocomplete="off" class="layui-input" id="L_repass" lay-verify="required" name="repassword"
+                       required
+                       type="password">
               </div>
-              <div class="layui-form-item">
-                <input type="hidden" name="username" value="{{d.username}}">
-                <input type="hidden" name="email" value="{{d.email}}">
-                <button class="layui-btn" alert="1" lay-filter="*" lay-submit>提交</button>
-              </div>
-            </form>
-          </div>
-
-
-          <div class="fly-error">该重置密码链接已失效，请重新校验您的信息</div>
-          <div class="fly-error">非法链接，请重新校验您的信息</div>
-          -->
-
-          <div class="layui-form layui-form-pane">
-            <form method="post">
-              <div class="layui-form-item">
-                <label for="L_email" class="layui-form-label">邮箱</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_email" name="email" required lay-verify="required" autocomplete="off" class="layui-input">
-                </div>
-              </div>
-              <div class="layui-form-item">
-                <label for="L_vercode" class="layui-form-label">人类验证</label>
-                <div class="layui-input-inline">
-                  <input type="text" id="L_vercode" name="vercode" required lay-verify="required" placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
-                </div>
-                <div class="layui-form-mid">
-                  <span style="color: #c00;">{{d.vercode}}</span>
-                </div>
-              </div>
-              <div class="layui-form-item">
-                <button class="layui-btn" alert="1" lay-filter="*" lay-submit>提交</button>
-              </div>
-            </form>
-          </div>
-
+            </div>
+            <div class="layui-form-item">
+              <button class="layui-btn" lay-filter="resetPwd" lay-submit>提交</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -126,20 +81,82 @@
 
 <script src="../../res/layui/layui.js"></script>
 <script>
-layui.cache.page = 'user';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
-layui.config({
-  version: "3.0.0"
-  ,base: '../../res/mods/'
-}).extend({
-  fly: 'index'
-}).use('fly');
+    layui.cache.page = "user";
+    layui.cache.user = {
+        username: "游客",
+        uid: -1,
+        avatar: "../../res/images/avatar/00.jpg",
+        experience: 83,
+        sex: "男"
+    };
+    layui.config({
+        version: "3.0.0",
+        base: "../../res/mods/"
+    }).extend({
+        fly: "index"
+    }).use("fly", () => {
+        layui.$("#get_code").click(function () {
+            if (!/^1[3456789]\d{9}$/.test(layui.$("#L_phone").val())) {
+                layer.msg("请输入正确的手机号码!", {icon: 5, anim: 6});
+                return false;
+            }
+
+            let el = this;
+
+            layui.fly.api(
+                "http://localhost:8081/users/send_code_exist",
+                {
+                    phone: layui.$("#L_phone").val()
+                },
+                res => {
+                    layui.$("#get_code").addClass(" layui-btn-disabled");
+                    layui.$("#get_code").attr("disabled", "true");
+                    setTime(el);
+                    layer.msg(res.msg, {icon: 6});
+                }
+            )
+
+            return false;
+        });
+
+        layui.form.on("submit(resetPwd)", data => {
+            if (data.field.password.length < 6 || data.field.password.length > 16) {
+                layer.msg("密码长度必须为6到16个字符!", {icon: 5, anim: 6});
+            } else if (data.field.password !== data.field.repassword) {
+                layer.msg("两次密码不一致!", {icon: 5, anim: 6});
+            } else {
+                layui.fly.api(
+                    "http://localhost:8081/users/reset_password",
+                    data.field,
+                    res => {
+                        layer.msg(res.msg, {icon: 6});
+                        // setTimeout(() => {
+                        //     location.href = "/user/login.html?phone=" + data.field.phone;
+                        // }, 1500)
+                    }
+                )
+            }
+            return false;
+        });
+    });
+
+    let time = 60;
+
+    const setTime = el => {
+        if (time === 0) {
+            el.removeAttribute("disabled");
+            el.classList.remove("layui-btn-disabled");
+            el.innerText = "获取";
+            time = 60;
+            return;
+        } else {
+            el.innerText = "获取(" + time + ")";
+            time--;
+        }
+        setTimeout(() => {
+            setTime(el);
+        }, 1000)
+    }
 </script>
 
 </body>

@@ -88,11 +88,11 @@
 <script>
     layui.cache.page = "user";
     layui.cache.user = {
-        username: "游客"
-        , uid: -1
-        , avatar: "../../res/images/avatar/00.jpg"
-        , experience: 83
-        , sex: "男"
+        username: "游客",
+        uid: -1,
+        avatar: "../../res/images/avatar/00.jpg",
+        experience: 83,
+        sex: "男"
     };
     layui.config({
         version: "3.0.0",
@@ -101,25 +101,23 @@
     }).extend({
         fly: "index"
     }).use(["fly", "form"], () => {
-        let $ = layui.$;
-
-        $("#get_code").click(function () {
-            if (!/^1[3456789]\d{9}$/.test($("#L_phone").val())) {
-                layer.msg("请输入正确的手机号!", {icon: 5, anim: 6});
+        layui.$("#get_code").click(function () {
+            if (!/^1[3456789]\d{9}$/.test(layui.$("#L_phone").val())) {
+                layer.msg("请输入正确的手机号码!", {icon: 5, anim: 6});
                 return false;
             }
 
-            let ele = this;
+            let el = this;
 
             layui.fly.api(
                 "http://localhost:8081/users/send_code",
                 {
-                    phone: $("#L_phone").val()
+                    phone: layui.$("#L_phone").val()
                 },
                 res => {
-                    $("#get_code").addClass(" layui-btn-disabled");
-                    $("#get_code").attr("disabled", "true");
-                    setTime(ele);
+                    layui.$("#get_code").addClass(" layui-btn-disabled");
+                    layui.$("#get_code").attr("disabled", "true");
+                    setTime(el);
                     layer.msg(res.msg, {icon: 6});
                 }
             )
@@ -150,19 +148,19 @@
 
     let time = 60;
 
-    const setTime = (obj) => {
+    const setTime = el => {
         if (time === 0) {
-            obj.removeAttribute("disabled");
-            obj.classList.remove("layui-btn-disabled");
-            obj.innerText = "获取";
+            el.removeAttribute("disabled");
+            el.classList.remove("layui-btn-disabled");
+            el.innerText = "获取";
             time = 60;
             return;
         } else {
-            obj.innerText = "获取(" + time + ")";
+            el.innerText = "获取(" + time + ")";
             time--;
         }
         setTimeout(() => {
-            setTime(obj)
+            setTime(el);
         }, 1000)
     }
 
