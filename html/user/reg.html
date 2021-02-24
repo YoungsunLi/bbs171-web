@@ -103,7 +103,7 @@
     }).use(["fly", "form"], () => {
         let $ = layui.$;
 
-        $("#get_code").click(() => {
+        $("#get_code").click(function () {
             if (!/^1[3456789]\d{9}$/.test($("#L_phone").val())) {
                 layer.msg("请输入正确的手机号!", {icon: 5, anim: 6});
                 return false;
@@ -120,7 +120,6 @@
                     $("#get_code").addClass(" layui-btn-disabled");
                     $("#get_code").attr("disabled", "true");
                     setTime(ele);
-                    console.log(res);
                     layer.msg(res.msg, {icon: 6});
                 }
             )
