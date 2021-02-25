@@ -79,8 +79,8 @@
                 "http://localhost:8081/user/token",
                 data.field,
                 res => {
-                    console.log(res);
                     sessionStorage.setItem("token", res.token);
+                    sessionStorage.setItem("user", JSON.stringify(res.user));
                     layer.msg(res.msg, {icon: 6});
                     setTimeout(() => {
                         location.href = "/";
