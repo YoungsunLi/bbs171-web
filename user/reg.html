@@ -136,9 +136,9 @@
                     data.field,
                     res => {
                         layer.msg(res.msg, {icon: 6});
-                        // setTimeout(() => {
-                        //     location.href = "/user/login.html?phone=" + data.field.phone;
-                        // }, 1500)
+                        setTimeout(() => {
+                            location.href = "/user/login.html?phone=" + data.field.phone;
+                        }, 1200)
                     }
                 )
             }

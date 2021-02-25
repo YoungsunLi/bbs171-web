@@ -25,8 +25,8 @@
         <li><a href="reg.html">注册</a></li>
       </ul>
       <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
-        <div class="layui-form layui-form-pane">
-          <form class="layui-form">
+        <div class="layui-form">
+          <form class="layui-form layui-form-pane">
             <div class="layui-form-item">
               <label class="layui-form-label" for="L_phone">手机</label>
               <div class="layui-input-inline">
@@ -82,9 +82,9 @@
                     console.log(res);
                     sessionStorage.setItem("token", res.token);
                     layer.msg(res.msg, {icon: 6});
-                    // setTimeout(() => {
-                    //     location.href = "/";
-                    // }, 1500)
+                    setTimeout(() => {
+                        location.href = "/";
+                    }, 1200)
                 }
             )
             return false;
