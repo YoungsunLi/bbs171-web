@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <title>登入</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
-  <link href="../../res/layui/css/layui.css" rel="stylesheet">
-  <link href="../../res/css/global.css" rel="stylesheet">
+  <link href="../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../res/css/global.css" rel="stylesheet">
 </head>
 <body>
 
 <div class="fly-header layui-bg-black">
   <div class="layui-container">
     <a class="fly-logo" href="/">
-      <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
+      <img alt="logo" src="../res/images/logo.png" style=" height: 37px; width: 135px;">
     </a>
   </div>
 </div>
@@ -58,7 +58,7 @@
   <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
 </div>
 
-<script src="../../res/layui/layui.js"></script>
+<script src="../res/layui/layui.js"></script>
 <script>
     layui.cache.page = "user";
     layui.cache.user = {
@@ -70,13 +70,13 @@
     };
     layui.config({
         version: "3.0.0",
-        base: "../../res/mods/"
+        base: "../res/mods/"
     }).extend({
         fly: "index"
     }).use("fly", () => {
         layui.form.on("submit(login)", data => {
             layui.fly.api(
-                "http://localhost:8081/users/token",
+                "http://localhost:8081/user/token",
                 data.field,
                 res => {
                     console.log(res);

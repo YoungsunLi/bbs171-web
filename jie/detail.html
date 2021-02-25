@@ -4,15 +4,15 @@
   <meta charset="utf-8">
   <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../../res/layui/css/layui.css">
-  <link rel="stylesheet" href="../../res/css/global.css">
+  <link rel="stylesheet" href="../res/layui/css/layui.css">
+  <link rel="stylesheet" href="../res/css/global.css">
 </head>
 <body>
 
 <div class="fly-header layui-bg-black">
   <div class="layui-container">
     <a class="fly-logo" href="/">
-      <img alt="logo" src="../../res/images/logo.png" style=" height: 37px; width: 135px;">
+      <img alt="logo" src="../res/images/logo.png" style=" height: 37px; width: 135px;">
     </a>
     <ul class="layui-nav fly-nav layui-hide-xs">
       <li class="layui-nav-item layui-this">
@@ -155,7 +155,7 @@
           </p>
           封面<hr>
           <p>
-            <img src="../../res/images/fly.jpg" alt="Fly社区">
+            <img src="../res/images/fly.jpg" alt="Fly社区">
           </p>
         </div>
       </div>
@@ -328,7 +328,7 @@
       </div>
 
       <div class="fly-panel" style="padding: 20px 0; text-align: center;">
-        <img src="../../res/images/weixin.jpg" style="max-width: 100%;" alt="layui">
+        <img src="../res/images/weixin.jpg" style="max-width: 100%;" alt="layui">
         <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
       </div>
 
@@ -340,7 +340,7 @@
   <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
 </div>
 
-<script src="../../res/layui/layui.js"></script>
+<script src="../res/layui/layui.js"></script>
 <script>
 layui.cache.page = 'jie';
 layui.cache.user = {
@@ -352,7 +352,7 @@ layui.cache.user = {
 };
 layui.config({
   version: "3.0.0"
-  ,base: '../../res/mods/'
+  ,base: '../res/mods/'
 }).extend({
   fly: 'index'
 }).use(['fly', 'face'], function(){
