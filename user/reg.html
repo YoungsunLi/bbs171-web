@@ -101,24 +101,25 @@
     }).extend({
         fly: "index"
     }).use(["fly", "form"], () => {
-        layui.$("#get_code").click(function () {
+        layui.$("#get_code").click(() => {
             if (!/^1[3456789]\d{9}$/.test(layui.$("#L_phone").val())) {
                 layer.msg("请输入正确的手机号码!", {icon: 5, anim: 6});
                 return false;
             }
-
-            let el = this;
-
+            layui.$("#get_code").addClass("layui-btn-disabled");
             layui.fly.api(
                 "http://localhost:8081/user/send_code",
                 {
                     phone: layui.$("#L_phone").val()
                 },
                 res => {
-                    layui.$("#get_code").addClass(" layui-btn-disabled");
-                    layui.$("#get_code").attr("disabled", "true");
-                    setTime(el);
+                    setTime();
                     layer.msg(res.msg, {icon: 6});
+                },
+                {
+                    error: () => {
+                        layui.$("#get_code").removeClass("layui-btn-disabled");
+                    }
                 }
             )
 
@@ -148,22 +149,20 @@
 
     let time = 60;
 
-    const setTime = el => {
+    const setTime = () => {
         if (time === 0) {
-            el.removeAttribute("disabled");
-            el.classList.remove("layui-btn-disabled");
-            el.innerText = "获取";
+            layui.$("#get_code").removeClass("layui-btn-disabled");
+            layui.$("#get_code").text("获取");
             time = 60;
             return;
         } else {
-            el.innerText = "获取(" + time + ")";
+            layui.$("#get_code").text("获取(" + time + ")");
             time--;
         }
         setTimeout(() => {
-            setTime(el);
+            setTime();
         }, 1000)
     }
-
 </script>
 
 </body>
