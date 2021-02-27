@@ -17,7 +17,7 @@
         <img alt="logo" src="../res/images/logo.png" style=" height: 37px; width: 135px;">
       </a>
 
-      <ul class="layui-nav fly-nav-user" v-if="null === user">
+      <ul class="layui-nav fly-nav-user" v-if="!user.username">
         <!-- 未登入的状态 -->
         <li class="layui-nav-item">
           <a class="iconfont icon-touxiang layui-hide-xs" href="user/login.html"></a>
@@ -37,7 +37,7 @@
             <cite class="layui-hide-xs">{{ user.username }}</cite>
             <!--            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
             <!--            <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
-            <img src="../res/images/avatar/default.png">
+            <img :alt="user.username" :src="user.avatar || '../res/images/avatar/default.png'">
           </a>
           <dl class="layui-nav-child">
             <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
@@ -116,9 +116,9 @@
     new Vue({
         el: "#app",
         data: {
-            user: JSON.parse(sessionStorage.getItem("user")),
+            user: JSON.parse(sessionStorage.getItem("user")) || {},
         },
-        mounted() {
+        created() {
             layui.cache.page = "";
             layui.cache.user = {
                 username: "游客",
