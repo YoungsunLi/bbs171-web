@@ -142,21 +142,20 @@
 
                 layui.form.on('submit(add)', data => {
                     console.log(data.field);
-                    layui.$("#add").addClass("layui-btn-disabled");
+                    layui.fly.disabled("#add");
                     layui.fly.api(
                         'http://localhost:8081/post/submit',
                         data.field,
                         res => {
                             layer.msg(res.msg, {icon: 6});
                             setTimeout(() => {
-                                // TODO
-                                // location.href = '<%= edit ? "/detail?id="+postForUpdate.getId() : "/"%>';
+                                location.href = '/';
                             }, 1200);
 
                         },
                         {
                             error: () => {
-                                layui.$("#add").removeClass("layui-btn-disabled");
+                                layui.fly.enabled("#add");
                             }
                         }
                     );
@@ -166,9 +165,7 @@
         },
         methods: {
             logout() {
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
-                location.href = "/";
+                layui.fly.logout();
             }
         }
     })

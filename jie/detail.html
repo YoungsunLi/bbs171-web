@@ -108,8 +108,8 @@
               <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="status" rank="0" style="background-color:#ccc;">取消加精</span> -->
             </div>
             <span class="fly-list-nums">
-              <a href="#comment"><i class="iconfont" title="评论数">&#xe60c;</i> {{ post.comment }}</a>
               <i class="iconfont" title="浏览量">&#xe60b;</i> {{ post.views }}
+              <a href="#comment"><i class="iconfont" title="评论数">&#xe60c;</i> {{ post.comment }}</a>
             </span>
           </div>
           <div class="detail-about">
@@ -128,7 +128,7 @@
               <span>个性签名: {{ post.sign }}</span>
             </div>
           </div>
-          <div class="detail-body photos">
+          <div class="detail-body">
             {{ post.content }}
           </div>
         </div>
@@ -139,7 +139,7 @@
           </fieldset>
 
           <ul class="jieda" id="jieda">
-            <li class="jieda-daan" v-for="comment in comments">
+            <li :key="comment.id + new Date()" class="jieda-daan" v-for="comment in comments">
               <div class="detail-about detail-about-reply">
                 <a class="fly-avatar" href="">
                   <img :alt="comment.username" :src="comment.avatar || '../res/images/avatar/default.png'">
@@ -157,7 +157,7 @@
                   <span>{{ comment.datetime }}</span>
                 </div>
               </div>
-              <div class="jieda-body photos">
+              <div class="jieda-body">
                 {{ comment.content }}
               </div>
               <div class="jieda-reply">
@@ -166,8 +166,8 @@
                 回复
               </span>
                 <div class="jieda-admin">
-                  <span type="edit">编辑</span>
-                  <span type="del">删除</span>
+                  <span @click="editComment(comment.id)" v-if="comment.from_phone === user.phone">编辑</span>
+                  <span @click="delComment(comment.id)" v-if="comment.from_phone === user.phone">删除</span>
                 </div>
               </div>
             </li>
@@ -299,19 +299,18 @@
                 this.getComments();
 
                 layui.form.on('submit(comment)', data => {
-                    layui.$("#comment").addClass("layui-btn-disabled");
+                    layui.fly.disabled("#comment");
                     layui.fly.api(
                         'http://localhost:8081/comment/submit',
                         data.field,
                         res => {
                             layer.msg(res.msg, {icon: 6});
-                            setTimeout(() => {
-                                location.reload();
-                            }, 400);
+                            this.getComments();
+                            layui.fly.enabled("#comment");
                         },
                         {
                             error: () => {
-                                layui.$("#comment").removeClass("layui-btn-disabled");
+                                layui.fly.enabled("#comment");
                             }
                         }
                     );
@@ -321,9 +320,7 @@
         },
         methods: {
             logout() {
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
-                location.reload();
+                layui.fly.logout();
             },
             getDetail() {
                 layui.fly.api(
@@ -331,7 +328,7 @@
                     this.data,
                     res => {
                         this.post = res.data;
-                        this.parseContent("detail-body");
+                        this.parseContent(".detail-body");
                     },
                     {
                         type: "get"
@@ -344,7 +341,7 @@
                     this.data,
                     res => {
                         this.comments = res.data;
-                        this.parseContent("jieda-body");
+                        this.parseContent(".jieda-body");
                     },
                     {
                         type: "get"
@@ -353,11 +350,30 @@
             },
             parseContent(el) {
                 setTimeout(() => {
-                    layui.$('.' + el).each(function () {
+                    layui.$(el).each(function () {
                         const that = layui.$(this), html = that.html();
                         that.html(layui.fly.content(html));
                     });
-                }, 0);
+                }, 100);
+            },
+            editComment(id) {
+
+            },
+            delComment(id) {
+                layer.confirm("确定要删除该回复吗?", (index) => {
+                    layer.close(index);
+                    layui.fly.api(
+                        "http://localhost:8081/comment/del_comment?id=" + id,
+                        this.data,
+                        res => {
+                            layer.msg(res.msg, {icon: 6});
+                            this.getComments();
+                        },
+                        {
+                            type: "get"
+                        }
+                    )
+                });
             }
         }
 

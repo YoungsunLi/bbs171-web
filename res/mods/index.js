@@ -107,21 +107,21 @@
           options.error && options.error(e);
         }
       });
-    }
+    },
 
     //计算字符长度
-    ,charLen: function(val){
+    charLen: function(val){
       var arr = val.split(''), len = 0;
       for(var i = 0; i <  val.length ; i++){
         arr[i].charCodeAt(0) < 299 ? len++ : len += 2;
       }
       return len;
-    }
+    },
 
-    ,form: {}
+    form: {},
 
     //简易编辑器
-    ,layEditor: function(options){
+    layEditor: function(options){
       var html = ['<div class="layui-unselect fly-edit">'
         ,'<span type="face" title="插入表情"><i class="iconfont icon-yxj-expression" style="top: 1px;"></i></span>'
         ,'<span type="picture" title="插入图片：img[src]"><i class="iconfont icon-tupian"></i></span>'
@@ -272,15 +272,15 @@
         });
       });
 
-    }
+    },
 
-    ,escape: function(html){
+    escape: function(html){
       return String(html||'').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
       .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
-    }
+    },
 
     //内容转义
-    ,content: function(content){
+    content: function(content){
       //支持的html标签
       var html = function(end){
         return new RegExp('\\n*\\['+ (end||'') +'(pre|hr|div|span|p|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)([\\s\\S]*?)\\]\\n*', 'g');
@@ -301,10 +301,10 @@
       }).replace(html(), '\<$1 $2\>').replace(html('/'), '\</$1\>') //转移HTML代码
       .replace(/\n/g, '<br>') //转义换行
       return content;
-    }
+    },
 
     //新消息通知
-    ,newmsg: function(){
+    newmsg: function(){
       var elemUser = $('.fly-nav-user');
       if(layui.cache.user.uid !== -1 && elemUser[0]){
         fly.json('/message/nums/', {
@@ -332,6 +332,24 @@
         });
       }
       return arguments.callee;
+    },
+
+    // 下面开始是自己定义的
+
+    logout() {
+      sessionStorage.removeItem("token");
+      sessionStorage.removeItem("user");
+      location.href = "/";
+    },
+
+    disabled(element) {
+      $(element).addClass("layui-btn-disabled");
+      $(element).attr('disabled', true);
+    },
+
+    enabled(element) {
+      $(element).removeClass("layui-btn-disabled");
+      $(element).attr('disabled', false);
     }
 
   };
@@ -610,8 +628,7 @@
     ,bgcolor: '#009688'
     ,click: function(type){
       if(type === 'bar1'){
-        layer.msg('打开 index.js，开启发表新帖的路径');
-        //location.href = 'jie/add.html';
+        location.href = '/jie/add.html';
       }
     }
   });

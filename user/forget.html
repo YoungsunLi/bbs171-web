@@ -100,7 +100,7 @@
                 layer.msg("请输入正确的手机号码!", {icon: 5, anim: 6});
                 return false;
             }
-            layui.$("#get_code").addClass("layui-btn-disabled");
+            layui.fly.disabled("#get_code");
             layui.fly.api(
                 "http://localhost:8081/user/send_code_exist",
                 {
@@ -112,7 +112,7 @@
                 },
                 {
                     error: () => {
-                        layui.$("#get_code").removeClass("layui-btn-disabled");
+                        layui.fly.enabled("#get_code");
                     }
                 }
             )
@@ -145,7 +145,7 @@
 
     const setTime = () => {
         if (time === 0) {
-            layui.$("#get_code").removeClass("layui-btn-disabled");
+            layui.fly.enabled("#get_code");
             layui.$("#get_code").text("获取");
             time = 60;
             return;

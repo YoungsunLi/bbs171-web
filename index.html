@@ -372,9 +372,7 @@
         },
         methods: {
             logout() {
-                sessionStorage.removeItem("token");
-                sessionStorage.removeItem("user");
-                location.reload();
+                layui.fly.logout();
             },
             getPosts() {
                 layui.fly.api(
