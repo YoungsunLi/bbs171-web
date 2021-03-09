@@ -94,7 +94,7 @@
             <span class="layui-badge layui-bg-gray">{{ post.category }}</span>
             <span class="layui-badge layui-bg-orange" v-if="post.status === 0">审核中</span>
             <!--            <span class="layui-badge layui-bg-black">置顶</span>-->
-            <!--            <span class="layui-badge layui-bg-red">精帖</span>-->
+            <span class="layui-badge layui-bg-red" v-if="post.highlight">精帖</span>
 
             <div class="fly-admin-box">
               <a class="layui-btn layui-btn-xs" href="./add.html?id=XX" v-if="user.phone === post.phone">编辑此贴</a>
