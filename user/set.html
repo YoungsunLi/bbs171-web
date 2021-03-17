@@ -141,28 +141,27 @@
               <div class="layui-form-item">
                 <label class="layui-form-label" for="L_nowpass">当前密码</label>
                 <div class="layui-input-inline">
-                  <input autocomplete="off" class="layui-input" id="L_nowpass" lay-verify="required" name="nowpass"
+                  <input autocomplete="off" class="layui-input" id="L_nowpass" lay-verify="required" name="oldPassword"
                          required type="password">
                 </div>
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label" for="L_pass">新密码</label>
                 <div class="layui-input-inline">
-                  <input autocomplete="off" class="layui-input" id="L_pass" lay-verify="required" name="pass" required
-                         type="password">
+                  <input autocomplete="off" class="layui-input" id="L_pass" lay-verify="required" name="newPassword"
+                         required type="password">
                 </div>
                 <div class="layui-form-mid layui-word-aux">6到16个字符</div>
               </div>
               <div class="layui-form-item">
                 <label class="layui-form-label" for="L_repass">确认密码</label>
                 <div class="layui-input-inline">
-                  <input autocomplete="off" class="layui-input" id="L_repass" lay-verify="required" name="repass"
-                         required
-                         type="password">
+                  <input autocomplete="off" class="layui-input" id="L_repass" lay-verify="required" name="rePassword"
+                         required type="password">
                 </div>
               </div>
               <div class="layui-form-item">
-                <button class="layui-btn" id="" lay-filter="" lay-submit>确认修改</button>
+                <button class="layui-btn" id="password" lay-filter="password" lay-submit>确认修改</button>
               </div>
             </form>
           </div>
@@ -225,6 +224,37 @@
                             }
                         }
                     );
+                    return false;
+                });
+
+                layui.form.on('submit(password)', data => {
+                    console.log(data);
+                    if (data.field.newPassword.length < 6 || data.field.newPassword.length > 16) {
+                        layer.msg('新密码长度必须为6到16个字符!', {icon: 5, anim: 6});
+                    } else if (data.field.newPassword !== data.field.rePassword) {
+                        layer.msg('两次密码不一致!', {icon: 5, anim: 6});
+                    } else if (data.field.oldPassword === data.field.newPassword) {
+                        layer.msg('新密码不能与当前密码一致!', {icon: 5, anim: 6});
+                    } else {
+                        layui.fly.disabled("#password");
+                        layui.fly.api(
+                            'http://localhost:8081/user/update_password',
+                            data.field,
+                            res => {
+                                layer.msg(res.msg, {icon: 6});
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 1200)
+                                layui.fly.enabled("#password");
+
+                            },
+                            {
+                                error: () => {
+                                    layui.fly.enabled("#password");
+                                }
+                            }
+                        );
+                    }
                     return false;
                 });
 
