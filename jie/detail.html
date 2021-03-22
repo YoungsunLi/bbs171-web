@@ -97,9 +97,11 @@
             <span class="layui-badge layui-bg-red" v-if="post.highlight">精帖</span>
 
             <div class="fly-admin-box">
-              <a class="layui-btn layui-btn-xs" href="./add.html?id=XX" v-if="user.phone === post.phone">编辑此贴</a>
-              <span class="layui-btn layui-btn-xs" v-if="post.status === 0">已删除</span>
-              <span class="layui-btn layui-btn-xs" v-else-if="user.phone === post.phone">删除</span>
+              <a class="layui-btn layui-btn-xs" href="./add.html?id=XX"
+                 v-if="user.phone === post.phone && user.role === 0">编辑此贴</a> <!--TODO-->
+              <span class="layui-btn layui-btn-xs layui-bg-red" v-if="post.status === 2">已删除</span>
+              <span @click="updateStatus(post.id, 2)" class="layui-btn layui-btn-xs"
+                    v-else-if="user.phone === post.phone && user.role === 0">删除</span>
 
               <!--              <span class="layui-btn layui-btn-xs jie-admin" field="stick" rank="1" type="set">置顶</span>-->
               <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
@@ -374,6 +376,24 @@
                         }
                     )
                 });
+            },
+            updateStatus(id, status) {
+                layui.fly.api(
+                    'http://localhost:8081/post/update_status',
+                    {
+                        id: id,
+                        status: status
+                    },
+                    res => {
+                        layer.msg(res.msg, {icon: 6});
+                        setTimeout(() => {
+                            location.href = '/';
+                        }, 1200);
+                    },
+                    {
+                        type: "get"
+                    }
+                );
             }
         }
 

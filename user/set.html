@@ -64,6 +64,12 @@
           我的消息
         </a>
       </li>
+      <li class="layui-nav-item" v-if="user.role === 0">
+        <a href="manage_posts.html">
+          <i class="layui-icon">&#xe632;</i>
+          管理帖子
+        </a>
+      </li>
     </ul>
 
     <div class="site-tree-mobile layui-hide">
