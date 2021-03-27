@@ -98,10 +98,10 @@
 
             <div class="fly-admin-box">
               <a class="layui-btn layui-btn-xs" href="./add.html?id=XX"
-                 v-if="user.phone === post.phone && user.role === 0">编辑此贴</a> <!--TODO-->
+                 v-if="user.id === post.user_id || user.role === 0">编辑此贴</a> <!--TODO-->
               <span class="layui-btn layui-btn-xs layui-bg-red" v-if="post.status === 2">已删除</span>
               <span @click="updateStatus(post.id, 2)" class="layui-btn layui-btn-xs"
-                    v-else-if="user.phone === post.phone && user.role === 0">删除</span>
+                    v-else-if="user.id === post.user_id || user.role === 0">删除</span>
 
               <!--              <span class="layui-btn layui-btn-xs jie-admin" field="stick" rank="1" type="set">置顶</span>-->
               <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
@@ -152,7 +152,7 @@
                     <i class="iconfont icon-nan" title="男" v-if="comment.gender === '男'"></i>
                     <i class="iconfont icon-nv" title="女" v-if="comment.gender === '女'"></i>
                   </a>
-                  <span v-if="post.phone === comment.from_phone">(楼主)</span>
+                  <span v-if="post.user_id === comment.from_id">(楼主)</span>
                   <span style="color:#5FB878" v-if="comment.role === 0">(管理员)</span>
                 </div>
                 <div class="detail-hits">
@@ -168,8 +168,8 @@
                 回复
               </span>
                 <div class="jieda-admin">
-                  <span @click="editComment(comment.id)" v-if="comment.from_phone === user.phone">编辑</span>
-                  <span @click="delComment(comment.id)" v-if="comment.from_phone === user.phone">删除</span>
+                  <span @click="editComment(comment.id)" v-if="comment.from_id === user.id || user.role === 0">编辑</span>
+                  <span @click="delComment(comment.id)" v-if="comment.from_id === user.id || user.role === 0">删除</span>
                 </div>
               </div>
             </li>
@@ -306,6 +306,7 @@
                         'http://localhost:8081/comment/submit',
                         data.field,
                         res => {
+                            layui.$("#L_content").val("");
                             layer.msg(res.msg, {icon: 6});
                             this.getComments();
                             layui.fly.enabled("#comment");
