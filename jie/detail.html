@@ -67,10 +67,10 @@
             <span class="fly-mid"></span>
           </li>
           <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block" v-if="user.username">
-            <a href="./user/index.html">我发表的贴</a>
+            <a href="../user/index.html">我发表的贴</a>
           </li>
           <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block" v-if="user.username">
-            <a href="./user/index.html#collection">我收藏的贴</a>
+            <a href="../user/index.html#collection">我收藏的贴</a>
           </li>
         </ul>
 
@@ -95,6 +95,7 @@
             <span class="layui-badge layui-bg-orange" v-if="post.status === 0">审核中</span>
             <!--            <span class="layui-badge layui-bg-black">置顶</span>-->
             <span class="layui-badge layui-bg-red" v-if="post.highlight">精帖</span>
+            <span class="layui-badge layui-bg-red" v-if="post.star !== 0">已收藏</span>
 
             <div class="fly-admin-box">
               <a class="layui-btn layui-btn-xs" href="./add.html?id=XX"
@@ -116,6 +117,15 @@
                     class="layui-btn layui-btn-xs"
                     v-else-if="user.role === 0 && post.highlight === 0"
               >加精</span>
+              <span @click="starPost(post.id, 0)"
+                    class="layui-btn layui-btn-xs"
+                    style="background-color:#ccc;"
+                    v-if="post.star !== 0"
+              >取消收藏</span>
+              <span @click="starPost(post.id, 1)"
+                    class="layui-btn layui-btn-xs"
+                    v-else-if="user.id"
+              >收藏</span>
               <!--              <span class="layui-btn layui-btn-xs jie-admin" field="stick" rank="1" type="set">置顶</span>-->
               <!-- <span class="layui-btn layui-btn-xs jie-admin" type="set" field="stick" rank="0" style="background-color:#ccc;">取消置顶</span> -->
             </div>
@@ -153,11 +163,11 @@
           <ul class="jieda" id="jieda">
             <li :key="comment.id + new Date()" class="jieda-daan" v-for="comment in comments">
               <div class="detail-about detail-about-reply">
-                <a class="fly-avatar" href="">
+                <a class="fly-avatar" :href="'../user/home.html?' + comment.user_id">
                   <img :alt="comment.username" :src="comment.avatar || '../res/images/avatar/default.png'">
                 </a>
                 <div class="fly-detail-user">
-                  <a class="fly-link" href="">
+                  <a class="fly-link" :href="'../user/home.html?' + comment.user_id">
                     <cite>{{ comment.username }}</cite>
                     <i class="iconfont icon-nan" title="男" v-if="comment.gender === '男'"></i>
                     <i class="iconfont icon-nv" title="女" v-if="comment.gender === '女'"></i>
@@ -308,7 +318,6 @@
                 fly: 'index'
             }).use(['fly', 'face'], () => {
                 this.getDetail();
-                this.getComments();
 
                 layui.form.on('submit(comment)', data => {
                     layui.fly.disabled("#comment");
@@ -342,6 +351,7 @@
                     res => {
                         this.post = res.data;
                         this.parseContent(".detail-body");
+                        this.getComments();
                     },
                     {
                         type: "get"
@@ -415,9 +425,23 @@
                     },
                     res => {
                         layer.msg(res.msg, {icon: 6});
-                        setTimeout(() => {
-                            this.getDetail();
-                        }, 1200);
+                        this.getDetail();
+                    },
+                    {
+                        type: "get"
+                    }
+                );
+            },
+            starPost(id, action) {
+                layui.fly.api(
+                    'http://localhost:8081/user/star_post',
+                    {
+                        id: id,
+                        action: action
+                    },
+                    res => {
+                        layer.msg(res.msg, {icon: 6});
+                        this.getDetail();
                     },
                     {
                         type: "get"
