@@ -304,32 +304,35 @@
     },
 
     //新消息通知
-    newmsg: function(){
-      var elemUser = $('.fly-nav-user');
-      if(layui.cache.user.uid !== -1 && elemUser[0]){
-        fly.json('/message/nums/', {
-          _: new Date().getTime()
-        }, function(res){
-          if(res.status === 0 && res.count > 0){
-            var msg = $('<a class="fly-nav-msg" href="javascript:;">'+ res.count +'</a>');
-            elemUser.append(msg);
-            msg.on('click', function(){
-              fly.json('/message/read', {}, function(res){
-                if(res.status === 0){
-                  location.href = '/user/message/';
-                }
-              });
-            });
-            layer.tips('你有 '+ res.count +' 条未读消息', msg, {
-              tips: 3
-              ,tipsMore: true
-              ,fixed: true
-            });
-            msg.on('mouseenter', function(){
-              layer.closeAll('tips');
-            })
-          }
-        });
+    newmsg: function () {
+      let elemUser = $('.fly-nav-user');
+      if (sessionStorage.getItem("user") && elemUser[0]) {
+        fly.api(
+            'http://localhost:8081/message/get_count',
+            {},
+            res => {
+              console.log("message count: ", res.count);
+              if (res.count > 0) {
+                let msg = $('<a class="fly-nav-msg" href="javascript:;">' + res.count + '</a>');
+                elemUser.append(msg);
+
+                layer.tips('你有 ' + res.count + ' 条未读消息', msg, {
+                  tips: 3,
+                  tipsMore: true,
+                  fixed: true
+                });
+
+                msg.on('mouseenter', () => {
+                  layer.closeAll('tips');
+                });
+
+                msg.on('click', () => {
+                  location.href = '/user/message.html';
+                });
+              }
+            },
+            {type: "get"}
+        );
       }
       return arguments.callee;
     },
@@ -532,8 +535,17 @@
     });
   }
 
+  // setInterval(() => {
+  //   //新消息通知
+  //   fly.newmsg();
+  // }, 100)
+
+
+
   //新消息通知
-  fly.newmsg();
+  if (document.baseURI !== "http://127.0.0.1:8090/user/message.html") {
+    fly.newmsg();
+  }
 
   //发送激活邮件
   fly.activate = function(email){

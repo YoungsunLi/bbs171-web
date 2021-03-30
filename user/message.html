@@ -3,130 +3,171 @@
 <head>
   <meta charset="utf-8">
   <title>我的消息</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="../res/layui/css/layui.css">
-  <link rel="stylesheet" href="../res/css/global.css">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
+  <link href="../res/layui/css/layui.css" rel="stylesheet">
+  <link href="../res/css/global.css" rel="stylesheet">
 </head>
 <body>
+<div id="app">
+  <div class="fly-header layui-bg-black">
+    <div class="layui-container">
+      <a class="fly-logo" href="/">
+        <img alt="logo" src="../res/images/logo.png" style=" height: 37px; width: 135px;">
+      </a>
 
-<div class="fly-header layui-bg-black">
-  <div class="layui-container">
-    <a class="fly-logo" href="/">
-      <img alt="logo" src="../res/images/logo.png" style=" height: 37px; width: 135px;">
-    </a>
+      <ul class="layui-nav fly-nav-user">
+        <!-- 登入后的状态 -->
+        <li class="layui-nav-item">
+          <a class="fly-nav-avatar" href="javascript:">
+            <cite class="layui-hide-xs">{{ user.username }}</cite>
+            <!--            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
+            <!--            <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
+            <img :alt="user.username" :src="user.avatar || '../res/images/avatar/default.png'">
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="../user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+            <dd><a href="../user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+            <dd><a :href="'./user/home.html?' + user.id"><i class="layui-icon"
+                                                            style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+            </dd>
+            <hr style="margin: 5px 0;">
+            <dd><a @click="logout()" style="text-align: center;">退出</a></dd>
+          </dl>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-    <ul class="layui-nav fly-nav-user">
-      <!-- 登入后的状态 -->
+  <div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
       <li class="layui-nav-item">
-        <a class="fly-nav-avatar" href="javascript:;">
-          <cite class="layui-hide-xs">贤心</cite>
-          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
-          <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
-          <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+        <a :href="'home.html?' + user.id">
+          <i class="layui-icon">&#xe609;</i>
+          我的主页
         </a>
-        <dl class="layui-nav-child">
-          <dd><a href="l"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
-          <dd><a href="/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-          <dd><a href="ml"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
-          <hr style="margin: 5px 0;">
-          <dd><a href="" style="text-align: center;">退出</a></dd>
-        </dl>
+      </li>
+      <li class="layui-nav-item">
+        <a href="index.html">
+          <i class="layui-icon">&#xe612;</i>
+          用户中心
+        </a>
+      </li>
+      <li class="layui-nav-item">
+        <a href="set.html">
+          <i class="layui-icon">&#xe620;</i>
+          基本设置
+        </a>
+      </li>
+      <li class="layui-nav-item layui-this">
+        <a href="message.html">
+          <i class="layui-icon">&#xe611;</i>
+          我的消息
+        </a>
+      </li>
+      <li class="layui-nav-item" v-if="user.role === 0">
+        <a href="manage_posts.html">
+          <i class="layui-icon">&#xe632;</i>
+          管理帖子
+        </a>
       </li>
     </ul>
-  </div>
-</div>
 
-<div class="layui-container fly-marginTop fly-user-main">
-  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-    <li class="layui-nav-item">
-      <a href="home.html">
-        <i class="layui-icon">&#xe609;</i>
-        我的主页
-      </a>
-    </li>
-    <li class="layui-nav-item">
-      <a href="index.html">
-        <i class="layui-icon">&#xe612;</i>
-        用户中心
-      </a>
-    </li>
-    <li class="layui-nav-item">
-      <a href="set.html">
-        <i class="layui-icon">&#xe620;</i>
-        基本设置
-      </a>
-    </li>
-    <li class="layui-nav-item layui-this">
-      <a href="message.html">
-        <i class="layui-icon">&#xe611;</i>
-        我的消息
-      </a>
-    </li>
-    <li class="layui-nav-item" v-if="user.role === 0">
-      <a href="manage_posts.html">
-        <i class="layui-icon">&#xe632;</i>
-        管理帖子
-      </a>
-    </li>
-  </ul>
+    <div class="site-tree-mobile layui-hide">
+      <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
 
-  <div class="site-tree-mobile layui-hide">
-    <i class="layui-icon">&#xe602;</i>
-  </div>
-  <div class="site-mobile-shade"></div>
+    <div class="site-tree-mobile layui-hide">
+      <i class="layui-icon">&#xe602;</i>
+    </div>
+    <div class="site-mobile-shade"></div>
 
-  <div class="site-tree-mobile layui-hide">
-    <i class="layui-icon">&#xe602;</i>
-  </div>
-  <div class="site-mobile-shade"></div>
-
-
-  <div class="fly-panel fly-panel-user" pad20>
-	  <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
-	    <button class="layui-btn layui-btn-danger" id="LAY_delallmsg">清空全部消息</button>
-	    <div  id="LAY_minemsg" style="margin-top: 10px;">
-        <!--<div class="fly-none">您暂时没有最新消息</div>-->
-        <ul class="mine-msg">
-          <li data-id="123">
-            <blockquote class="layui-elem-quote">
-              <a href="/jump?username=Absolutely" target="_blank"><cite>Absolutely</cite></a>回答了您的求解<a target="_blank" href="/jie/8153.html/page/0/#item-1489505778669"><cite>layui后台框架</cite></a>
-            </blockquote>
-            <p><span>1小时前</span><a href="javascript:;" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
-          </li>
-          <li data-id="123">
-            <blockquote class="layui-elem-quote">
-              系统消息：欢迎使用 layui
-            </blockquote>
-            <p><span>1小时前</span><a href="javascript:;" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
-          </li>
-        </ul>
+    <div class="fly-panel fly-panel-user" pad20>
+      <div class="layui-tab layui-tab-brief" id="LAY_msg" lay-filter="user" style="margin-top: 15px;">
+        <button class="layui-btn layui-btn-danger" id="LAY_delallmsg" v-show="messages.length > 0">清空全部消息</button>
+        <div id="LAY_minemsg" style="margin-top: 10px;">
+          <div class="fly-none" v-if="messages.length === 0">您暂时没有最新消息</div>
+          <ul class="mine-msg">
+            <li v-for="message in messages" :key="message.id" :data-id="message.id">
+              <blockquote class="layui-elem-quote" v-if="message.type === 0">
+                <a :href="'../user/home.html?' + message.user_id">
+                  <cite>{{ message.from_name}}</cite>
+                </a>
+                回复了你的帖子:
+                <a :href="'../jie/detail.html?' + message.post_id">
+                  <cite>{{ message.post_title }}</cite>
+                </a>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ message.content }}
+              </blockquote>
+              <blockquote class="layui-elem-quote" v-else>
+                系统消息：{{ message.content }}
+              </blockquote>
+              <p>
+                <span>{{ message.datetime }}</span>
+                <a class="layui-btn layui-btn-small layui-btn-danger fly-delete" href="javascript:">删除</a>
+              </p>
+            </li>
+          </ul>
+        </div>
       </div>
-	  </div>
-	</div>
+    </div>
+  </div>
 
-</div>
-
-
-<div class="fly-footer">
-  <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
+  <div class="fly-footer">
+    <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
+  </div>
 </div>
 
 <script src="../res/layui/layui.js"></script>
+<script src="../res/js/vue.min.js"></script>
+
 <script>
-layui.cache.page = 'user';
-layui.cache.user = {
-  username: '游客'
-  ,uid: -1
-  ,avatar: '../../res/images/avatar/00.jpg'
-  ,experience: 83
-  ,sex: '男'
-};
-layui.config({
-  version: "3.0.0"
-  ,base: '../res/mods/'
-}).extend({
-  fly: 'index'
-}).use('fly');
+    new Vue({
+        el: "#app",
+        data: {
+            user: JSON.parse(sessionStorage.getItem("user")) || {},
+            messages: []
+        },
+        created() {
+            layui.cache.page = 'user';
+            layui.cache.user = {
+                username: '游客',
+                uid: -1,
+                avatar: '../res/images/avatar/00.jpg',
+                experience: 83,
+                sex: '男'
+            };
+            layui.config({
+                version: "3.0.0"
+                , base: '../res/mods/'
+            }).extend({
+                fly: 'index'
+            }).use('fly', () => {
+                if (!this.user.username) {
+                    layui.fly.logout();
+                    return;
+                }
+
+                this.getMessages();
+            });
+        },
+        methods: {
+            logout() {
+                layui.fly.logout();
+            },
+            getMessages() {
+                layui.fly.api(
+                    'http://localhost:8081/message/read',
+                    {},
+                    res => {
+                        this.messages = res.messages || [];
+                    },
+                    {type: "get"}
+                );
+            }
+        }
+    })
 </script>
 
 </body>
