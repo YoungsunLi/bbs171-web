@@ -37,7 +37,7 @@
             <cite class="layui-hide-xs">{{ user.username }}</cite>
             <!--            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>-->
             <!--            <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>-->
-            <img :alt="user.username" :src="user.avatar || '../res/images/avatar/default.png'">
+            <img :alt="user.username" :src="'https://cdn.v2ex.com/gravatar/'+ user.avatar +'?s=36&d=retro'">
           </a>
           <dl class="layui-nav-child">
             <dd><a href="../user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
@@ -136,7 +136,7 @@
           </div>
           <div class="detail-about">
             <a :href="'../user/home.html?' + post.user_id" class="fly-avatar">
-              <img :alt="post.username" :src="post.avatar || '../res/images/avatar/default.png'">
+              <img :alt="post.username" :src="'https://cdn.v2ex.com/gravatar/'+ post.avatar +'?s=45&d=retro'">
             </a>
             <div class="fly-detail-user">
               <a :href="'../user/home.html?' + post.user_id" class="fly-link">
@@ -164,7 +164,7 @@
             <li :key="comment.id + new Date()" class="jieda-daan" v-for="comment in comments">
               <div class="detail-about detail-about-reply">
                 <a class="fly-avatar" :href="'../user/home.html?' + comment.user_id">
-                  <img :alt="comment.username" :src="comment.avatar || '../res/images/avatar/default.png'">
+                  <img :alt="comment.username" :src="'https://cdn.v2ex.com/gravatar/'+ comment.avatar +'?s=45&d=retro'">
                 </a>
                 <div class="fly-detail-user">
                   <a class="fly-link" :href="'../user/home.html?' + comment.user_id">
