@@ -263,7 +263,14 @@
       <div class="layui-col-md4">
 
         <div class="fly-panel">
-          <h3 class="fly-panel-title">温馨通道</h3>
+          <div class="fly-panel-title">
+            公告栏
+            <span class="fly-signin-days" style="width: 160px; text-align: right">
+              <a v-if="user !== null && user.role === 0" class="fly-link" href="/notice/add.html">发布新公告</a>
+              <i class="fly-mid"></i>
+              <a class="fly-link" href="javascript:">查看更多</a>
+            </span>
+          </div>
           <ul class="fly-panel-main fly-list-static">
             <li>
               <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
