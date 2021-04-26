@@ -264,23 +264,16 @@
 
         <div class="fly-panel">
           <div class="fly-panel-title">
-            公告栏
+            最新公告
             <span class="fly-signin-days" style="width: 160px; text-align: right">
               <a v-if="user !== null && user.role === 0" class="fly-link" href="/notice/add.html">发布新公告</a>
               <i class="fly-mid"></i>
               <a class="fly-link" href="javascript:">查看更多</a>
             </span>
           </div>
-          <ul class="fly-panel-main fly-list-static">
-            <li>
-              <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-            </li>
-            <li>
-              <a href="http://fly.layui.com/jie/5366/" target="_blank">
-                layui 常见问题的处理和实用干货集锦
-              </a>
-            </li>
-          </ul>
+          <div class="fly-panel-main" style="text-indent: 2em;">
+            {{ notice.content || "" }}
+          </div>
         </div>
 
 
@@ -362,7 +355,8 @@
                 sort: 0,
                 keywords: ""
             },
-            posts: []
+            posts: [],
+            notice: {}
         },
         created() {
             layui.cache.page = "";
@@ -380,6 +374,7 @@
                 fly: "index"
             }).use("fly", () => {
                 this.getPosts();
+                this.getLatestNotice();
             });
         },
         methods: {
@@ -392,6 +387,18 @@
                     this.data,
                     res => {
                         this.posts = res.data;
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            },
+            getLatestNotice() {
+                layui.fly.api(
+                    "http://localhost:8081/notice/get_latest",
+                    {},
+                    res => {
+                        this.notice = res.data;
                     },
                     {
                         type: "get"
