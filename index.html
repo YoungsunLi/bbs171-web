@@ -332,6 +332,22 @@
           -->
         </dl>
 
+        <dl class="fly-panel fly-list-one">
+          <dt class="fly-panel-title">社区运行状况</dt>
+          <dd>
+            注册会员: {{ systemInfo.totalUsers || 0 }}
+          </dd>
+          <dd>
+            在线会员: {{ systemInfo.totalOnlineUsers || 0 }}
+          </dd>
+          <dd>
+            帖子: {{ systemInfo.totalPosts || 0 }}
+          </dd>
+          <dd>
+            新贴: {{ systemInfo.totalNewPosts || 0 }}
+          </dd>
+        </dl>
+
       </div>
     </div>
   </div>
@@ -356,7 +372,8 @@
                 keywords: ""
             },
             posts: [],
-            notice: {}
+            notice: {},
+            systemInfo: {}
         },
         created() {
             layui.cache.page = "";
@@ -375,6 +392,9 @@
             }).use("fly", () => {
                 this.getPosts();
                 this.getLatestNotice();
+                setTimeout(() => {
+                    this.getSystemInfo();
+                }, 200)
             });
         },
         methods: {
@@ -399,6 +419,18 @@
                     {},
                     res => {
                         this.notice = res.data;
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            },
+            getSystemInfo() {
+                layui.fly.api(
+                    "http://localhost:8081/system/get_info",
+                    {},
+                    res => {
+                        this.systemInfo = res.data;
                     },
                     {
                         type: "get"
