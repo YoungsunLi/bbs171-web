@@ -219,51 +219,11 @@
       <div class="layui-col-md4">
         <dl class="fly-panel fly-list-one">
           <dt class="fly-panel-title">本周热议</dt>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
+          <dd v-for="post in hotPosts" :key="post.id">
+            <a :href="'./jie/detail.html?' + post.id">{{ post.title }}</a>
+            <span style="float: right"><i class="iconfont icon-pinglun1"></i> {{ post.comment }}</span>
           </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-          <dd>
-            <a href="">基于 layui 的极简社区页面模版</a>
-            <span><i class="iconfont icon-pinglun1"></i> 16</span>
-          </dd>
-
-          <!-- 无数据时 -->
-          <!--
-          <div class="fly-none">没有相关数据</div>
-          -->
+          <div v-if="hotPosts.length === 0" class="fly-none">没有相关数据</div>
         </dl>
 
         <div class="fly-panel">
@@ -300,7 +260,8 @@
             user: JSON.parse(sessionStorage.getItem("user")) || {},
             id: window.location.search.substring(1),
             post: {},
-            comments: []
+            comments: [],
+            hotPosts: [],
         },
         created() {
             layui.cache.page = 'jie';
@@ -318,6 +279,7 @@
                 fly: 'index'
             }).use(['fly', 'face'], () => {
                 this.getDetail();
+                this.getHotPosts();
 
                 layui.form.on('submit(comment)', data => {
                     layui.fly.disabled("#comment");
@@ -447,6 +409,18 @@
                         type: "get"
                     }
                 );
+            },
+            getHotPosts() {
+                layui.fly.api(
+                    "http://localhost:8081/post/get_hot",
+                    {},
+                    res => {
+                        this.hotPosts = res.data;
+                    },
+                    {
+                        type: "get"
+                    }
+                )
             }
         }
 
