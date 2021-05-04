@@ -143,6 +143,7 @@
                 <cite>{{ post.username }}</cite>
                 <i class="iconfont icon-nan" title="男" v-if="post.gender === '男'"></i>
                 <i class="iconfont icon-nv" style="color: #F581B1;" title="女" v-if="post.gender === '女'"></i>
+                <span style="color:#5FB878;">({{ post.level_name }})</span>
               </a>
               <span>{{ post.datetime }}</span>
             </div>

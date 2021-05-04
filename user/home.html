@@ -59,9 +59,8 @@
       <i class="iconfont icon-nan" v-if="userData.gender === '男'"></i>
       <i class="iconfont icon-nv" v-else-if="userData.gender === '女'"></i>
       <span style="color:#c00;" v-if="userData.role === 0">（管理员）</span>
-      <!--      <i class="layui-badge fly-badge-vip">VIP3</i>-->
-      <!--      <span style="color:#5FB878;">（社区之光）</span>-->
-      <!--      <span>（该号已被封）</span>-->
+      <span style="color:#5FB878;">({{ userData.level_name }})</span>
+<!--            <span>（该号已被封）</span>-->
     </h1>
 
     <!--    <p style="padding: 10px 0; color: #5FB878;">认证信息：layui 作者</p>-->

@@ -233,8 +233,7 @@
               <div class="fly-list-info">
                 <a :href="'./user/home.html?' + post.user_id">
                   <cite>{{ post.username }}</cite>
-                  <!--                  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>-->
-                  <!--                  <i class="layui-badge fly-badge-vip">VIP3</i>-->
+                  <span style="color:#5FB878;">({{ post.level_name }})</span>
                 </a>
                 <span>{{ post.datetime }}</span>
                 <span class="fly-list-nums">
