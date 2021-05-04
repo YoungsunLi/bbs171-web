@@ -58,9 +58,7 @@
       <div class="layui-container">
         <ul class="layui-clear">
           <li><a :href="'../index.html?' + 0">综合</a></li>
-          <li><a :href="'../index.html?' + 1">默认</a></li>
-          <li><a :href="'../index.html?' + 2">学习</a></li>
-          <li><a :href="'../index.html?' + 3">生活</a></li>
+          <li><a :href="'../index.html?' + category.id" v-for="category in categorys">{{ category.category_name }}</a></li>
 
           <!-- 用户登入后显示 -->
           <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block" v-if="user.username">
@@ -91,7 +89,7 @@
         <div class="fly-panel detail-box">
           <h1>{{ post.title }}</h1>
           <div class="fly-detail-info">
-            <span class="layui-badge layui-bg-gray">{{ post.category }}</span>
+            <span class="layui-badge layui-bg-gray">{{ post.category_name }}</span>
             <span class="layui-badge layui-bg-orange" v-if="post.status === 0">审核中</span>
             <!--            <span class="layui-badge layui-bg-black">置顶</span>-->
             <span class="layui-badge layui-bg-red" v-if="post.highlight">精帖</span>
@@ -260,6 +258,7 @@
         data: {
             user: JSON.parse(sessionStorage.getItem("user")) || {},
             id: window.location.search.substring(1),
+            categorys: [],
             post: {},
             comments: [],
             hotPosts: [],
@@ -279,6 +278,7 @@
             }).extend({
                 fly: 'index'
             }).use(['fly', 'face'], () => {
+                this.getCategory();
                 this.getDetail();
                 this.getHotPosts();
 
@@ -306,6 +306,18 @@
         methods: {
             logout() {
                 layui.fly.logout();
+            },
+            getCategory() {
+                layui.fly.api(
+                    "http://localhost:8081/post/get_category",
+                    {},
+                    res => {
+                        this.categorys = res.data;
+                    },
+                    {
+                        type: "get"
+                    }
+                )
             },
             getDetail() {
                 layui.fly.api(

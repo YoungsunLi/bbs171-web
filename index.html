@@ -61,9 +61,7 @@
     <div class="layui-container">
       <ul class="layui-clear">
         <li :class="{'layui-this': data.category === 0}"><a @click="data.category = 0; getPosts();">综合</a></li>
-        <li :class="{'layui-this': data.category === 1}"><a @click="data.category = 1; getPosts();">默认</a></li>
-        <li :class="{'layui-this': data.category === 2}"><a @click="data.category = 2; getPosts();">学习</a></li>
-        <li :class="{'layui-this': data.category === 3}"><a @click="data.category = 3; getPosts();">生活</a></li>
+        <li :class="{'layui-this': data.category === category.id}" v-for="category in categorys"><a @click="data.category = category.id; getPosts();">{{ category.category_name }}</a></li>
 
         <!-- 用户登入后显示 -->
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block" v-if="user.username">
@@ -227,7 +225,7 @@
                 <img :alt="post.username" :src="'https://cdn.v2ex.com/gravatar/'+ post.avatar +'?s=45&d=retro'">
               </a>
               <h2>
-                <a class="layui-badge">{{ post.category }}</a>
+                <a class="layui-badge">{{ post.category_name }}</a>
                 <a :href="'./jie/detail.html?' + post.id">{{ post.title }}</a>
               </h2>
               <div class="fly-list-info">
@@ -345,6 +343,7 @@
                 sort: 0,
                 keywords: ""
             },
+            categorys: [],
             posts: [],
             hotPosts: [],
             notice: {},
@@ -365,6 +364,7 @@
             }).extend({
                 fly: "index"
             }).use("fly", () => {
+                this.getCategory();
                 this.getPosts();
                 this.getLatestNotice();
                 this.getHotPosts();
@@ -376,6 +376,18 @@
         methods: {
             logout() {
                 layui.fly.logout();
+            },
+            getCategory() {
+                layui.fly.api(
+                    "http://localhost:8081/post/get_category",
+                    {},
+                    res => {
+                        this.categorys = res.data;
+                    },
+                    {
+                        type: "get"
+                    }
+                )
             },
             getPosts() {
                 layui.fly.api(
