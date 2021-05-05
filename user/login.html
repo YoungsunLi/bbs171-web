@@ -83,8 +83,13 @@
                     sessionStorage.setItem("token", res.token);
                     sessionStorage.setItem("user", JSON.stringify(res.user));
                     layer.msg(res.msg, {icon: 6});
+
                     setTimeout(() => {
-                        location.href = "/";
+                        if (res.user.role === 100) {
+                            location.href = "/config";
+                        } else {
+                            location.href = "/";
+                        }
                     }, 1200)
                 },
                 {

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>超级管理后台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="res/layui/css/layui.css">
+  <link rel="stylesheet" href="res/css/global.css">
+</head>
+<body>
+<div id="app">
+
+  <h1 style="position: absolute; width:100%; text-align: center; top: 20px; left: 0; font-size: 20px; color: #333;">
+    超级管理后台
+    <a @click="logout" style="font-size: 16px; color: #01AAED; cursor: pointer;">(退出登录)</a>
+  </h1>
+
+
+  <div class="layui-container">
+    <table class="layui-table layui-text">
+      <colgroup>
+        <col width="100">
+        <col width="150">
+        <col>
+      </colgroup>
+      <thead>
+      <tr style="background-color: #009688; color: #FFFFFF">
+        <td colspan="3" style="text-align: center">板块管理</td>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <th>板块名称</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="category in categorys">
+        <td>{{ category.id }}</td>
+        <td>{{ category.category_name }}</td>
+        <td>
+          <button type="button" class="layui-btn layui-btn-xs" @click="updateCategory(category)">修改</button>
+          <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" @click="delCategory(category.id)">删除
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3">
+          <button type="button" class="layui-btn layui-btn-xs" @click="addCategory">添加新的板块</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <table class="layui-table layui-text">
+      <colgroup>
+        <col width="100">
+        <col width="150">
+        <col width="150">
+        <col>
+      </colgroup>
+      <thead>
+      <tr style="background-color: #009688; color: #FFFFFF">
+        <td colspan="4" style="text-align: center">普通管理员设置</td>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <th>手机号</th>
+        <th>用户名</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="user in adminUsers">
+        <td>{{ user.id }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.username }}</td>
+        <td>
+          <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <button type="button" class="layui-btn layui-btn-xs">添加普通管理员</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="fly-footer">
+    <p>&copy; 2021<a href="https://lsun.net/">Youngsun Li.</a>Powered by Layui & Vue</p>
+  </div>
+</div>
+<script src="./res/layui/layui.js"></script>
+<script src="./res/js/vue.min.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            categorys: [],
+            adminUsers: []
+        },
+        created() {
+            layui.config({
+                base: "../res/mods/"
+            }).extend({
+                fly: "index"
+            }).use("fly", () => {
+                this.getCategory();
+                this.getAdminUsers();
+            });
+        },
+        methods: {
+            logout() {
+                layui.fly.logout();
+            },
+            getCategory() {
+                layui.fly.api(
+                    "http://localhost:8081/post/get_category",
+                    {},
+                    res => {
+                        this.categorys = res.data;
+                        setTimeout(() => {
+                            layui.form.render();
+                        }, 0)
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            },
+            getAdminUsers() {
+                layui.fly.api(
+                    "http://localhost:8081/system/get_admin_users",
+                    {},
+                    res => {
+                        this.adminUsers = res.data;
+                        setTimeout(() => {
+                            layui.form.render();
+                        }, 0)
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            },
+            addCategory() {
+                layer.prompt({title: '输入板块名称，并确认'}, (value, index) => {
+                    layer.close(index);
+                    layui.fly.api(
+                        "http://localhost:8081/system/add_category",
+                        {
+                            category_name: value.replace(/\s+/g, "")
+                        },
+                        res => {
+                            layer.msg(res.msg, {icon: 6});
+                            this.getCategory();
+                        }
+                    )
+                });
+            },
+            delCategory(id) {
+                layui.fly.api(
+                    "http://localhost:8081/system/del_category",
+                    {
+                        id: id
+                    },
+                    res => {
+                        layer.msg(res.msg, {icon: 6});
+                        this.getCategory();
+                    }
+                )
+            },
+            updateCategory(category) {
+                layer.prompt({title: '修改 "' + category.category_name + '" 板块名称'}, (value, index) => {
+                    layer.close(index);
+                    layui.fly.api(
+                        "http://localhost:8081/system/update_category",
+                        {
+                            id: category.id,
+                            category_name: value.replace(/\s+/g, "")
+                        },
+                        res => {
+                            layer.msg(res.msg, {icon: 6});
+                            this.getCategory();
+                        }
+                    )
+                });
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -1,4 +1,10 @@
-﻿layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
+﻿if (!(document.location.pathname === "/config" || document.location.pathname === "/config.html")) {
+    if ((JSON.parse(sessionStorage.getItem("user")) || {}).role === 100) {
+        location.href = "/config";
+    }
+}
+
+layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(exports){
 
   var $ = layui.jquery
   ,layer = layui.layer
