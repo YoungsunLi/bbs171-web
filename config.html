@@ -75,12 +75,13 @@
         <td>{{ user.phone }}</td>
         <td>{{ user.username }}</td>
         <td>
-          <button type="button" class="layui-btn layui-btn-danger layui-btn-xs">删除</button>
+          <button type="button" class="layui-btn layui-btn-danger layui-btn-xs" @click="delAdminUser(user.phone)">删除
+          </button>
         </td>
       </tr>
       <tr>
         <td colspan="4">
-          <button type="button" class="layui-btn layui-btn-xs">添加普通管理员</button>
+          <button type="button" class="layui-btn layui-btn-xs" @click="addAdminUser">添加普通管理员</button>
         </td>
       </tr>
       </tbody>
@@ -121,21 +122,6 @@
                     {},
                     res => {
                         this.categorys = res.data;
-                        setTimeout(() => {
-                            layui.form.render();
-                        }, 0)
-                    },
-                    {
-                        type: "get"
-                    }
-                )
-            },
-            getAdminUsers() {
-                layui.fly.api(
-                    "http://localhost:8081/system/get_admin_users",
-                    {},
-                    res => {
-                        this.adminUsers = res.data;
                         setTimeout(() => {
                             layui.form.render();
                         }, 0)
@@ -187,6 +173,48 @@
                         }
                     )
                 });
+            },
+            getAdminUsers() {
+                layui.fly.api(
+                    "http://localhost:8081/system/get_admin_users",
+                    {},
+                    res => {
+                        this.adminUsers = res.data;
+                        setTimeout(() => {
+                            layui.form.render();
+                        }, 0)
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            },
+            addAdminUser() {
+                layer.prompt({title: '输入用户手机号，并确认'}, (value, index) => {
+                    layer.close(index);
+                    layui.fly.api(
+                        "http://localhost:8081/system/add_admin_user",
+                        {
+                            phone: value.replace(/\s+/g, "")
+                        },
+                        res => {
+                            layer.msg(res.msg, {icon: 6});
+                            this.getAdminUsers();
+                        }
+                    )
+                });
+            },
+            delAdminUser(phone) {
+                layui.fly.api(
+                    "http://localhost:8081/system/del_admin_user",
+                    {
+                        phone: phone
+                    },
+                    res => {
+                        layer.msg(res.msg, {icon: 6});
+                        this.getAdminUsers();
+                    }
+                )
             }
         }
     })
