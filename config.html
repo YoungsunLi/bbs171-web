@@ -99,6 +99,7 @@
     new Vue({
         el: "#app",
         data: {
+            user: JSON.parse(sessionStorage.getItem("user")) || {},
             categorys: [],
             adminUsers: []
         },
@@ -108,6 +109,11 @@
             }).extend({
                 fly: "index"
             }).use("fly", () => {
+                if (this.user.role !== 100) {
+                    location.href = "/";
+                    return;
+                }
+
                 this.getCategory();
                 this.getAdminUsers();
             });
