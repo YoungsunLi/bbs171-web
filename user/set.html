@@ -132,11 +132,12 @@
           <div class="layui-form layui-form-pane layui-tab-item">
             <div class="layui-form-item">
               <div class="avatar-add">
-                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
-                <button class="layui-btn upload-img" type="button">
-                  <i class="layui-icon">&#xe67c;</i>上传头像
-                </button>
-                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                <p style="font-size: 14px;">像素画风格头像自动生成</p>
+<!--                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>-->
+<!--                <button class="layui-btn upload-img" type="button">-->
+<!--                  <i class="layui-icon">&#xe67c;</i>上传头像-->
+<!--                </button>-->
+                <img :alt="user.username" :src="'https://cdn.v2ex.com/gravatar/'+ user.avatar +'?s=168&d=retro'" v-if="user.avatar">
                 <span class="loading"></span>
               </div>
             </div>

@@ -108,7 +108,7 @@
   <div class="layui-container">
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md8">
-        <div class="fly-panel">
+        <div class="fly-panel" v-if="false" style="display: none">
           <div class="fly-panel-title fly-filter">
             <a>置顶</a>
           </div>
@@ -119,7 +119,7 @@
               </a>
               <h2>
                 <a class="layui-badge">动态</a>
-                <a href="./jie/detail.html">基于 layui 的极简社区页面模版</a>
+                <a href="./jie/detail.html">XXXXXXXXXXXXXXXXXXXXX</a>
               </h2>
               <div class="fly-list-info">
                 <a href="./user/home.html" link>
@@ -148,7 +148,7 @@
               </a>
               <h2>
                 <a class="layui-badge">公告</a>
-                <a href="./jie/detail.html">基于 layui 的极简社区页面模版</a>
+                <a href="./jie/detail.html">XXXXXXXXXXXXXXXXXXXXX</a>
               </h2>
               <div class="fly-list-info">
                 <a href="./user/home.html" link>
@@ -179,7 +179,7 @@
               </a>
               <h2>
                 <a class="layui-badge">公告</a>
-                <a href="./jie/detail.html">基于 layui 的极简社区页面模版</a>
+                <a href="./jie/detail.html">XXXXXXXXXXXXXXXXXXXXX</a>
               </h2>
               <div class="fly-list-info">
                 <a href="./user/home.html" link>
@@ -247,9 +247,9 @@
 
           <div class="fly-none" v-else>没有相关数据</div>
 
-          <div style="text-align: center">
+          <div style="text-align: center" v-if="posts.length > 10">
             <div class="laypage-main">
-              <a class="laypage-next" href="./jie/index.html">更多求解</a>
+              <a class="laypage-next" href="/">加载更多</a>
             </div>
           </div>
 
