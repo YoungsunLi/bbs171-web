@@ -31,6 +31,12 @@
             <dd><a :href="'./user/home.html?' + user.id"><i class="layui-icon"
                                                style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
             </dd>
+            <dd v-if="user.role === 0">
+              <a href="/user/manage_posts.html">
+                <i class="layui-icon" style="margin-left: 3px; margin-right: 7px; font-size: 22px;">&#xe632;</i>
+                后台管理
+              </a>
+            </dd>
             <hr style="margin: 5px 0;">
             <dd><a @click="logout()" style="text-align: center;">退出</a></dd>
           </dl>
@@ -41,30 +47,6 @@
 
   <div class="layui-container fly-marginTop fly-user-main">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-      <li class="layui-nav-item">
-        <a :href="'home.html?' + user.id">
-          <i class="layui-icon">&#xe609;</i>
-          我的主页
-        </a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="index.html">
-          <i class="layui-icon">&#xe612;</i>
-          用户中心
-        </a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="set.html">
-          <i class="layui-icon">&#xe620;</i>
-          基本设置
-        </a>
-      </li>
-      <li class="layui-nav-item">
-        <a href="message.html">
-          <i class="layui-icon">&#xe611;</i>
-          我的消息
-        </a>
-      </li>
       <li class="layui-nav-item layui-this">
         <a href="manage_posts.html">
           <i class="layui-icon">&#xe632;</i>
@@ -84,7 +66,7 @@
     <div class="site-mobile-shade"></div>
 
 
-    <div class="fly-panel fly-panel-user" pad20 style="min-width: 958px">
+    <div class="fly-panel fly-panel-user" pad20 style="min-width: 910px">
       <form class="layui-form layui-form-pane" style="padding-top: 8px">
         <div class="layui-form-item">
           <label class="layui-form-label" style="width: 64px">板块</label>
@@ -100,13 +82,13 @@
               <option value="0">按最新</option>
               <option value="1">按热度</option>
               <option value="2">按评论</option>
-              <option value="3">按举报</option>
+<!--              <option value="3">按举报</option>-->
             </select>
           </label>
           <label class="layui-form-label" style="width: 64px">状态</label>
           <label class="layui-form layui-input-inline" style="width: 90px;">
             <select id="status" name="status">
-              <option value="0">未审核</option>
+<!--              <option value="0">未审核</option>-->
               <option value="1">已审核</option>
               <option value="2">已删除</option>
               <option selected value="3">全部</option>
@@ -131,7 +113,7 @@
             <col width="134">
             <col width="58">
             <col width="58">
-            <col width="58">
+<!--            <col width="58">-->
             <col width="127">
           </colgroup>
           <thead>
@@ -144,7 +126,7 @@
             <th style="text-align: center">发帖时间</th>
             <th style="text-align: center">访问量</th>
             <th style="text-align: center">评论量</th>
-            <th style="text-align: center">举报量</th>
+<!--            <th style="text-align: center">举报量</th>-->
             <th style="text-align: center">操作</th>
           </tr>
           </thead>
@@ -153,8 +135,8 @@
             <td>{{ index + 1 }}</td>
             <td>
               <span class="layui-badge-rim" style="color: #009688; border-color: #009688"
-                    v-if="post.status === 1">已审核</span>
-              <span class="layui-badge-rim" style="color: #FFB800; border-color: #FFB800" v-else-if="post.status === 0">未审核</span>
+                    v-if="post.status === 1">正常</span>
+<!--              <span class="layui-badge-rim" style="color: #FFB800; border-color: #FFB800" v-else-if="post.status === 0">未审核</span>-->
               <span class="layui-badge-rim" style="color: #FF5722; border-color: #FF5722" v-else-if="post.status === 2">已删除</span>
             </td>
             <td>
@@ -172,18 +154,13 @@
             <td>{{ post.datetime}}</td>
             <td>{{ post.views }}</td>
             <td>{{ post.comment }}</td>
-            <td>{{ post.report}}</td>
+<!--            <td>{{ post.report}}</td>-->
             <td>
-              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-orange"
-                    v-if="post.status ===1">重新审核</span>
-              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green"
-                    v-if="post.status ===0">通过审核</span>
-              <span @click="updateStatus(post.id, 2)" class="layui-btn layui-btn-xs layui-bg-red"
-                    v-if="post.status < 2">删除</span>
-              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green"
-                    v-if="post.status === 2">恢复到已审核</span>
-              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-gray"
-                    v-if="post.status === 2">恢复到未审核</span>
+<!--              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-orange" v-if="post.status ===1">重新审核</span>-->
+<!--              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green" v-if="post.status ===0">通过审核</span>-->
+              <span @click="updateStatus(post.id, 2)" class="layui-btn layui-btn-xs layui-bg-red" v-if="post.status < 2">删除</span>
+              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green" v-if="post.status === 2">恢复</span>
+<!--              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-gray" v-if="post.status === 2">恢复到未审核</span>-->
             </td>
           </tr>
           </tbody>

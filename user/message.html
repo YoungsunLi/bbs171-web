@@ -30,6 +30,12 @@
             <dd><a :href="'./user/home.html?' + user.id"><i class="layui-icon"
                                                             style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
             </dd>
+            <dd v-if="user.role === 0">
+              <a href="/user/manage_posts.html">
+                <i class="layui-icon" style="margin-left: 3px; margin-right: 7px; font-size: 22px;">&#xe632;</i>
+                后台管理
+              </a>
+            </dd>
             <hr style="margin: 5px 0;">
             <dd><a @click="logout()" style="text-align: center;">退出</a></dd>
           </dl>
@@ -62,12 +68,6 @@
         <a href="message.html">
           <i class="layui-icon">&#xe611;</i>
           我的消息
-        </a>
-      </li>
-      <li class="layui-nav-item" v-if="user.role === 0">
-        <a href="manage_posts.html">
-          <i class="layui-icon">&#xe632;</i>
-          管理帖子
         </a>
       </li>
     </ul>
