@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <title>管理帖子</title>
+  <title>管理用户</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
   <link href="../res/layui/css/layui.css" rel="stylesheet">
   <link href="../res/css/global.css" rel="stylesheet">
@@ -47,17 +47,18 @@
 
   <div class="layui-container fly-marginTop fly-user-main">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-      <li class="layui-nav-item layui-this">
+      <li class="layui-nav-item">
         <a href="manage_posts.html">
           <i class="layui-icon">&#xe632;</i>
           管理帖子
         </a>
       </li>
-      <li class="layui-nav-item">
+      <li class="layui-nav-item layui-this">
         <a href="manage_users.html">
           <i class="layui-icon">&#xe632;</i>
           管理用户
         </a>
+      </li>
     </ul>
 
     <div class="site-tree-mobile layui-hide">
@@ -74,34 +75,25 @@
     <div class="fly-panel fly-panel-user" pad20 style="min-width: 910px">
       <form class="layui-form layui-form-pane" style="padding-top: 8px">
         <div class="layui-form-item">
-          <label class="layui-form-label" style="width: 64px">板块</label>
-          <label class="layui-form layui-input-inline" style="width: 90px;">
-            <select id="category" name="category">
-              <option value="0">综合</option>
-              <option :value="category.id" v-for="category in categorys">{{ category.category_name }}</option>
-            </select>
-          </label>
           <label class="layui-form-label" style="width: 64px">排序</label>
-          <label class="layui-form layui-input-inline" style="width: 90px;">
+          <label class="layui-form layui-input-inline" style="width: 125px;">
             <select id="sort" name="sort">
-              <option value="0">按最新</option>
-              <option value="1">按热度</option>
-              <option value="2">按评论</option>
-<!--              <option value="3">按举报</option>-->
+              <option value="0">按注册时间</option>
+              <option value="1">按上次活跃</option>
+              <option value="2">按经验值</option>
             </select>
           </label>
           <label class="layui-form-label" style="width: 64px">状态</label>
-          <label class="layui-form layui-input-inline" style="width: 90px;">
+          <label class="layui-form layui-input-inline" style="width: 110px;">
             <select id="status" name="status">
-<!--              <option value="0">未审核</option>-->
-              <option value="1">正常</option>
-              <option value="2">已删除</option>
               <option selected value="3">全部</option>
+              <option value="1">正常</option>
+              <option value="2">限制登录</option>
             </select>
           </label>
           <label class="layui-form-label" style="width: 64px">搜索</label>
           <label class="layui-form layui-input-inline">
-            <input autocomplete="off" class="layui-input" id="keywords" name="keywords" placeholder="标题关键字(选填)"
+            <input autocomplete="off" class="layui-input" id="keywords" name="keywords" placeholder="用户名或手机号码(选填)"
                    type="text">
           </label>
           <button class="layui-btn" id="submit" lay-filter="submit" lay-submit>查询</button>
@@ -112,66 +104,55 @@
           <colgroup>
             <col width="48">
             <col width="72">
-            <col width="72">
             <col>
+            <col width="72">
             <col width="110">
             <col width="134">
             <col width="58">
-            <col width="58">
-<!--            <col width="58">-->
             <col width="127">
           </colgroup>
           <thead>
           <tr>
             <th style="text-align: center">序号</th>
             <th style="text-align: center">状态</th>
-            <th style="text-align: center">板块</th>
-            <th>ID & 标题</th>
-            <th style="text-align: center">作者</th>
-            <th style="text-align: center">发帖时间</th>
-            <th style="text-align: center">访问量</th>
-            <th style="text-align: center">评论量</th>
-<!--            <th style="text-align: center">举报量</th>-->
+            <th>ID & 用户名</th>
+            <th style="text-align: center">手机号码</th>
+            <th style="text-align: center">注册时间</th>
+            <th style="text-align: center">上次活跃</th>
+            <th style="text-align: center">经验值</th>
             <th style="text-align: center">操作</th>
           </tr>
           </thead>
           <tbody>
-          <tr :key="post.id" v-for="(post, index) in posts">
+          <tr :key="user.id" v-for="(user, index) in users">
             <td>{{ index + 1 }}</td>
             <td>
               <span class="layui-badge-rim" style="color: #009688; border-color: #009688"
-                    v-if="post.status === 1">正常</span>
-<!--              <span class="layui-badge-rim" style="color: #FFB800; border-color: #FFB800" v-else-if="post.status === 0">未审核</span>-->
-              <span class="layui-badge-rim" style="color: #FF5722; border-color: #FF5722" v-else-if="post.status === 2">已删除</span>
-            </td>
-            <td>
-              <span class="layui-badge-rim">{{ post.category_name }}</span>
+                    v-if="user.status === 1">正常</span>
+              <span class="layui-badge-rim" style="color: #FF5722; border-color: #FF5722" v-else-if="user.status === 2">限制登录</span>
             </td>
             <td style="text-align: left">
-              <a :href="'/jie/detail.html?' + post.id" class="jie-title" style="width: 320px">
-                <span class="layui-badge-rim">{{ post.id }}</span>
-                {{ post.title }}
+              <a :href="'/user/home.html?' + user.id" class="jie-title" style="width: 320px">
+                <span class="layui-badge-rim">{{ user.id }}</span>
+                {{ user.username }}
               </a>
             </td>
             <td>
-              <a class="jie-title" href="" style="width: 320px" target="_blank">{{ post.username }}</a>
+              <span class="layui-badge-rim">{{ user.phone }}</span>
             </td>
-            <td>{{ post.datetime}}</td>
-            <td>{{ post.views }}</td>
-            <td>{{ post.comment }}</td>
-<!--            <td>{{ post.report}}</td>-->
+            <td>{{ user.datetime}}</td>
+            <td>{{ user.lastTime}}</td>
+            <td>{{ user.experience }}</td>
             <td>
-<!--              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-orange" v-if="post.status ===1">重新审核</span>-->
-<!--              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green" v-if="post.status ===0">通过审核</span>-->
-              <span @click="updateStatus(post.id, 2)" class="layui-btn layui-btn-xs layui-bg-red" v-if="post.status < 2">删除</span>
-              <span @click="updateStatus(post.id, 1)" class="layui-btn layui-btn-xs layui-bg-green" v-if="post.status === 2">恢复</span>
-<!--              <span @click="updateStatus(post.id, 0)" class="layui-btn layui-btn-xs layui-bg-gray" v-if="post.status === 2">恢复到未审核</span>-->
+              <span @click="resetPassword(user)" class="layui-btn layui-btn-xs layui-bg-cyan">重置密码</span>
+              <span @click="updateUserStatus(user.id, 2)" class="layui-btn layui-btn-xs layui-bg-red" v-if="user.status ===1">封号</span>
+              <span @click="updateUserStatus(user.id, 1)" class="layui-btn layui-btn-xs" v-if="user.status === 2">恢复</span>
             </td>
           </tr>
           </tbody>
         </table>
 
-        <div class="fly-none" v-if="posts.length === 0">暂无数据</div>
+        <div class="fly-none" v-if="users.length === 0">暂无数据</div>
         <div id="LAY_page"></div>
       </div>
     </div>
@@ -189,8 +170,7 @@
         el: "#app",
         data: {
             user: JSON.parse(sessionStorage.getItem("user")) || {},
-            categorys: [],
-            posts: []
+            users: []
         },
         created() {
             layui.cache.page = 'user';
@@ -212,15 +192,13 @@
                     return;
                 }
 
-                this.getCategory();
-                this.getPosts({
-                    category: 0,
+                this.getUsers({
                     sort: 0,
                     status: 3,
                     keywords: ""
                 });
                 layui.form.on('submit(submit)', data => {
-                    this.getPosts(data.field);
+                    this.getUsers(data.field);
                     return false;
                 });
             });
@@ -229,28 +207,13 @@
             logout() {
                 layui.fly.logout();
             },
-            getCategory() {
-                layui.fly.api(
-                    "http://localhost:8081/post/get_category",
-                    {},
-                    res => {
-                        this.categorys = res.data;
-                        setTimeout(() => {
-                            layui.form.render();
-                        }, 0)
-                    },
-                    {
-                        type: "get"
-                    }
-                )
-            },
-            getPosts(data) {
+            getUsers(data) {
                 layui.fly.disabled("#submit");
                 layui.fly.api(
-                    "http://localhost:8081/post/get_posts_for_manage",
+                    "http://localhost:8081/system/get_users",
                     data,
                     res => {
-                        this.posts = res.data;
+                        this.users = res.data;
                         layui.fly.enabled("#submit");
                     },
                     {
@@ -261,9 +224,9 @@
                     }
                 )
             },
-            updateStatus(id, status) {
+            updateUserStatus(id, status) {
                 layui.fly.api(
-                    'http://localhost:8081/post/update_status',
+                    'http://localhost:8081/system/update_user_status',
                     {
                         id: id,
                         status: status
@@ -276,6 +239,25 @@
                         type: "get"
                     }
                 );
+            },
+            resetPassword(user) {
+                layer.confirm('重置' + user.username + '的密码为默认?', {
+                    btn: ['确定','取消']
+                }, function(){
+                    layui.fly.api(
+                        'http://localhost:8081/system/reset_password',
+                        {
+                            id: user.id
+                        },
+                        res => {
+                            layer.msg(res.msg, {icon: 6});
+                            layui.$("#submit").click();
+                        },
+                        {
+                            type: "get"
+                        }
+                    );
+                })
             }
         }
     })

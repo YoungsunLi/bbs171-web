@@ -317,7 +317,14 @@ layui.define(['layer', 'laytpl', 'form', 'element', 'upload', 'util'], function(
             'http://localhost:8081/message/get_count',
             {},
             res => {
-              console.log("message count: ", res.count);
+              if (res.illegal) {
+                layer.msg(res.msg, {shift: 6});
+                setTimeout(() => {
+                  this.logout();
+                }, 1500)
+                return;
+              }
+
               if (res.count > 0) {
                 let msg = $('<a class="fly-nav-msg" href="javascript:;">' + res.count + '</a>');
                 elemUser.append(msg);
