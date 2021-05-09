@@ -263,7 +263,7 @@
             <span class="fly-signin-days" style="width: 160px; text-align: right">
               <a v-if="user !== null && user.role === 0" class="fly-link" href="/notice/add.html">发布新公告</a>
               <i class="fly-mid"></i>
-              <a class="fly-link" href="javascript:">查看更多</a>
+              <a class="fly-link" href="javascript:" @click="showMoreNotices">查看更多</a>
             </span>
           </div>
           <div class="fly-panel-main" style="text-indent: 2em;">
@@ -412,6 +412,16 @@
                         type: "get"
                     }
                 )
+            },
+            showMoreNotices() {
+                layer.open({
+                    type: 2,
+                    title: '公告',
+                    shadeClose: true,
+                    shade: 0.8,
+                    area: ['600px', '800px'],
+                    content: '/notice'
+                });
             }
         }
     })

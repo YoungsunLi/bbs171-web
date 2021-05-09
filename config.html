@@ -109,6 +109,7 @@
             }).extend({
                 fly: "index"
             }).use("fly", () => {
+                document.getElementsByClassName("layui-fixbar")[0].remove();
                 if (this.user.role !== 100) {
                     location.href = "/";
                     return;

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>公告</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/res/layui/css/layui.css">
+  <link rel="stylesheet" href="/res/css/global.css">
+</head>
+<body style="margin-top: 0;">
+<div id="app">
+  <ul class="fly-list" v-if="this.notices.length > 0">
+    <li v-for="notice in notices" style="height: auto; padding: 15px;">
+      <div style="text-indent: 2em;">{{ notice.content }}</div>
+      <div class="fly-list-info" style="text-align: end; margin-top: 8px;">
+        <span style="color:#5FB878;">{{ notice.username }}</span>
+        <span style="padding-right: 0;">{{ notice.datetime }}</span>
+      </div>
+    </li>
+  </ul>
+</div>
+<script src="/res/layui/layui.js"></script>
+<script src="/res/js/vue.min.js"></script>
+
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            user: JSON.parse(sessionStorage.getItem("user")) || {},
+            notices: []
+        },
+        created() {
+            layui.config({
+                base: "../res/mods/"
+            }).extend({
+                fly: "index"
+            }).use("fly", () => {
+                document.getElementsByClassName("layui-fixbar")[0].remove();
+                this.getNotices();
+            });
+        },
+        methods: {
+            getNotices() {
+                layui.fly.api(
+                    "http://localhost:8081/notice/get_all",
+                    {},
+                    res => {
+                        this.notices = res.data;
+                        setTimeout(() => {
+                            layui.form.render();
+                        }, 0)
+                    },
+                    {
+                        type: "get"
+                    }
+                )
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
