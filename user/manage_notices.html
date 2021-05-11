@@ -81,25 +81,17 @@
     <div class="fly-panel fly-panel-user" pad20 style="min-width: 910px">
       <form class="layui-form layui-form-pane" style="padding-top: 8px">
         <div class="layui-form-item">
-          <label class="layui-form-label" style="width: 64px">排序</label>
-          <label class="layui-form layui-input-inline" style="width: 125px;">
-            <select id="sort" name="sort">
-              <option value="0">按注册时间</option>
-              <option value="1">按上次活跃</option>
-              <option value="2">按经验值</option>
-            </select>
-          </label>
           <label class="layui-form-label" style="width: 64px">状态</label>
           <label class="layui-form layui-input-inline" style="width: 110px;">
             <select id="status" name="status">
-              <option selected value="3">全部</option>
-              <option value="1">正常</option>
-              <option value="2">限制登录</option>
+              <option selected value="1">正常</option>
+              <option value="2">已删除</option>
+              <option value="3">全部</option>
             </select>
           </label>
           <label class="layui-form-label" style="width: 64px">搜索</label>
           <label class="layui-form layui-input-inline">
-            <input autocomplete="off" class="layui-input" id="keywords" name="keywords" placeholder="用户名或手机号码(选填)"
+            <input autocomplete="off" class="layui-input" id="keywords" name="keywords" placeholder="搜索内容"
                    type="text">
           </label>
           <button class="layui-btn" id="submit" lay-filter="submit" lay-submit>查询</button>
@@ -110,55 +102,45 @@
           <colgroup>
             <col width="48">
             <col width="72">
-            <col>
             <col width="72">
+            <col>
             <col width="110">
             <col width="134">
-            <col width="58">
-            <col width="127">
           </colgroup>
           <thead>
           <tr>
             <th style="text-align: center">序号</th>
             <th style="text-align: center">状态</th>
-            <th>ID & 用户名</th>
-            <th style="text-align: center">手机号码</th>
-            <th style="text-align: center">注册时间</th>
-            <th style="text-align: center">上次活跃</th>
-            <th style="text-align: center">经验值</th>
+            <th>作者</th>
+            <th style="text-align: center">内容</th>
+            <th style="text-align: center">发布时间</th>
             <th style="text-align: center">操作</th>
           </tr>
           </thead>
           <tbody>
-          <tr :key="user.id" v-for="(user, index) in users">
+          <tr :key="notice.id" v-for="(notice, index) in notices">
             <td>{{ index + 1 }}</td>
             <td>
               <span class="layui-badge-rim" style="color: #009688; border-color: #009688"
-                    v-if="user.status === 1">正常</span>
-              <span class="layui-badge-rim" style="color: #FF5722; border-color: #FF5722" v-else-if="user.status === 2">限制登录</span>
+                    v-if="notice.status === 1">正常</span>
+              <span class="layui-badge-rim" style="color: #FF5722; border-color: #FF5722" v-else-if="notice.status === 2">已删除</span>
             </td>
             <td style="text-align: left">
-              <a :href="'/user/home.html?' + user.id" class="jie-title" style="width: 320px">
-                <span class="layui-badge-rim">{{ user.id }}</span>
-                {{ user.username }}
-              </a>
+              <a :href="'/notice/home.html?' + notice.id" class="jie-title" style="width: 320px">{{ notice.username }}</a>
             </td>
             <td>
-              <span class="layui-badge-rim">{{ user.phone }}</span>
+              <div style="white-space: normal; text-align: left;">{{ notice.content }}</div>
             </td>
-            <td>{{ user.datetime}}</td>
-            <td>{{ user.lastTime}}</td>
-            <td>{{ user.experience }}</td>
+            <td>{{ notice.datetime}}</td>
             <td>
-              <span @click="resetPassword(user)" class="layui-btn layui-btn-xs layui-bg-cyan">重置密码</span>
-              <span @click="updateUserStatus(user.id, 2)" class="layui-btn layui-btn-xs layui-bg-red" v-if="user.status ===1">封号</span>
-              <span @click="updateUserStatus(user.id, 1)" class="layui-btn layui-btn-xs" v-if="user.status === 2">恢复</span>
+              <span @click="updateNoticeStatus(notice.id, 2)" class="layui-btn layui-btn-xs layui-bg-red" v-if="notice.status ===1">删除</span>
+              <span @click="updateNoticeStatus(notice.id, 1)" class="layui-btn layui-btn-xs" v-if="notice.status === 2">恢复</span>
             </td>
           </tr>
           </tbody>
         </table>
 
-        <div class="fly-none" v-if="users.length === 0">暂无数据</div>
+        <div class="fly-none" v-if="notices.length === 0">暂无数据</div>
         <div id="LAY_page"></div>
       </div>
     </div>
@@ -176,7 +158,7 @@
         el: "#app",
         data: {
             user: JSON.parse(sessionStorage.getItem("user")) || {},
-            users: []
+            notices: []
         },
         created() {
             layui.cache.page = 'user';
@@ -198,13 +180,12 @@
                     return;
                 }
 
-                this.getUsers({
-                    sort: 0,
-                    status: 3,
+                this.getNotices({
+                    status: 1,
                     keywords: ""
                 });
                 layui.form.on('submit(submit)', data => {
-                    this.getUsers(data.field);
+                    this.getNotices(data.field);
                     return false;
                 });
             });
@@ -213,13 +194,13 @@
             logout() {
                 layui.fly.logout();
             },
-            getUsers(data) {
+            getNotices(data) {
                 layui.fly.disabled("#submit");
                 layui.fly.api(
-                    "http://localhost:8081/system/get_users",
+                    "http://localhost:8081/system/get_notices",
                     data,
                     res => {
-                        this.users = res.data;
+                        this.notices = res.data;
                         layui.fly.enabled("#submit");
                     },
                     {
@@ -230,9 +211,9 @@
                     }
                 )
             },
-            updateUserStatus(id, status) {
+            updateNoticeStatus(id, status) {
                 layui.fly.api(
-                    'http://localhost:8081/system/update_user_status',
+                    'http://localhost:8081/system/update_notice_status',
                     {
                         id: id,
                         status: status
@@ -245,25 +226,6 @@
                         type: "get"
                     }
                 );
-            },
-            resetPassword(user) {
-                layer.confirm('重置' + user.username + '的密码为默认?', {
-                    btn: ['确定','取消']
-                }, function(){
-                    layui.fly.api(
-                        'http://localhost:8081/system/reset_password',
-                        {
-                            id: user.id
-                        },
-                        res => {
-                            layer.msg(res.msg, {icon: 6});
-                            layui.$("#submit").click();
-                        },
-                        {
-                            type: "get"
-                        }
-                    );
-                })
             }
         }
     })

@@ -101,9 +101,9 @@
           <label class="layui-form layui-input-inline" style="width: 90px;">
             <select id="status" name="status">
 <!--              <option value="0">未审核</option>-->
-              <option value="1">正常</option>
+              <option selected value="1">正常</option>
               <option value="2">已删除</option>
-              <option selected value="3">全部</option>
+              <option value="3">全部</option>
             </select>
           </label>
           <label class="layui-form-label" style="width: 64px">搜索</label>
@@ -223,7 +223,7 @@
                 this.getPosts({
                     category: 0,
                     sort: 0,
-                    status: 3,
+                    status: 1,
                     keywords: ""
                 });
                 layui.form.on('submit(submit)', data => {
