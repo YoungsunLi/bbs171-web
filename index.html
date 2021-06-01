@@ -60,8 +60,8 @@
   <div class="fly-panel fly-column">
     <div class="layui-container">
       <ul class="layui-clear">
-        <li :class="{'layui-this': data.category === 0}"><a @click="data.category = 0; getPosts();">综合</a></li>
-        <li :class="{'layui-this': data.category === category.id}" v-for="category in categorys"><a @click="data.category = category.id; getPosts();">{{ category.category_name }}</a></li>
+        <li :class="{'layui-this': data.category === 0}"><a @click="data.category = 0; data.pageIndex = 0;getPosts();">综合</a></li>
+        <li :class="{'layui-this': data.category === category.id}" v-for="category in categorys"><a @click="data.category = category.id; data.pageIndex = 0; getPosts();">{{ category.category_name }}</a></li>
 
         <!-- 用户登入后显示 -->
         <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block" v-if="user.username">
@@ -99,7 +99,7 @@
                  v-model="data.keywords"
           >
         </label>
-        <button @click="getPosts()" class="layui-btn">搜索</button>
+        <button @click="data.pageIndex = 0; getPosts()" class="layui-btn">搜索</button>
         <a class="layui-btn" href="./jie/add.html">发表新帖</a>
       </div>
     </div>
@@ -108,117 +108,18 @@
   <div class="layui-container">
     <div class="layui-row layui-col-space15">
       <div class="layui-col-md8">
-        <div class="fly-panel" v-if="false" style="display: none">
-          <div class="fly-panel-title fly-filter">
-            <a>置顶</a>
-          </div>
-          <ul class="fly-list">
-            <li>
-              <a class="fly-avatar" href="./user/home.html">
-                <img alt="贤心" src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
-              </a>
-              <h2>
-                <a class="layui-badge">动态</a>
-                <a href="./jie/detail.html">TODO</a>
-              </h2>
-              <div class="fly-list-info">
-                <a href="./user/home.html" link>
-                  <cite>贤心</cite>
-                  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                  <i class="layui-badge fly-badge-vip">VIP3</i>
-                </a>
-                <span>刚刚</span>
-
-                <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>
-                <span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>
-                <span class="fly-list-nums">
-                <i class="iconfont icon-pinglun1" title="回答"></i> 66
-              </span>
-              </div>
-              <div class="fly-list-badge">
-                <!--
-                <span class="layui-badge layui-bg-black">置顶</span>
-                <span class="layui-badge layui-bg-red">精帖</span>
-                -->
-              </div>
-            </li>
-            <li>
-              <a class="fly-avatar" href="./user/home.html">
-                <img alt="贤心" src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
-              </a>
-              <h2>
-                <a class="layui-badge">公告</a>
-                <a href="./jie/detail.html">TODO</a>
-              </h2>
-              <div class="fly-list-info">
-                <a href="./user/home.html" link>
-                  <cite>贤心</cite>
-                  <!--
-                  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                  <i class="layui-badge fly-badge-vip">VIP3</i>
-                  -->
-                </a>
-                <span>2017-11-30</span>
-
-                <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>
-                <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
-                <span class="fly-list-nums">
-                <i class="iconfont icon-pinglun1" title="回答"></i> 66
-              </span>
-              </div>
-              <div class="fly-list-badge">
-                <!--
-                <span class="layui-badge layui-bg-black">置顶</span>
-                <span class="layui-badge layui-bg-red">精帖</span>
-                -->
-              </div>
-            </li>
-            <li>
-              <a class="fly-avatar" href="./user/home.html">
-                <img alt="贤心" src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
-              </a>
-              <h2>
-                <a class="layui-badge">公告</a>
-                <a href="./jie/detail.html">TODO</a>
-              </h2>
-              <div class="fly-list-info">
-                <a href="./user/home.html" link>
-                  <cite>贤心</cite>
-                  <!--
-                  <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
-                  <i class="layui-badge fly-badge-vip">VIP3</i>
-                  -->
-                </a>
-                <span>刚刚</span>
-
-                <span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻"><i class="iconfont icon-kiss"></i> 60</span>
-                <!--<span class="layui-badge fly-badge-accept layui-hide-xs">已结</span>-->
-                <span class="fly-list-nums">
-                <i class="iconfont icon-pinglun1" title="回答"></i> 66
-              </span>
-              </div>
-              <div class="fly-list-badge">
-                <!--
-                <span class="layui-badge layui-bg-black">置顶</span>
-                <span class="layui-badge layui-bg-red">精帖</span>
-                -->
-              </div>
-            </li>
-          </ul>
-        </div>
-
         <div class="fly-panel" style="margin-bottom: 0;">
 
           <div class="fly-panel-title fly-filter">
-            <a :class="{'layui-this': data.sort === 0}" @click="data.sort = 0;getPosts();">按最新</a>
+            <a :class="{'layui-this': data.sort === 0}" @click="data.sort = 0; data.pageIndex = 0; getPosts();">按最新</a>
             <span class="fly-mid"></span>
-            <a :class="{'layui-this': data.sort === 1}" @click="data.sort = 1;getPosts();">按浏览量</a>
+            <a :class="{'layui-this': data.sort === 1}" @click="data.sort = 1; data.pageIndex = 0; getPosts();">按浏览量</a>
             <span class="fly-mid"></span>
-            <a :class="{'layui-this': data.sort === 2}" @click="data.sort = 2;getPosts();">按评论数</a>
+            <a :class="{'layui-this': data.sort === 2}" @click="data.sort = 2; data.pageIndex = 0; getPosts();">按评论数</a>
           </div>
 
           <ul class="fly-list" v-if="this.posts.length > 0">
-            <li v-for="post in posts">
+            <li v-for="post in posts" :key="post.id">
               <a :href="'./user/home.html?' + post.user_id" class="fly-avatar">
                 <img :alt="post.username" :src="'https://cdn.v2ex.com/gravatar/'+ post.avatar +'?s=45&d=retro'" v-if="post.avatar">
               </a>
@@ -247,9 +148,9 @@
 
           <div class="fly-none" v-else>没有相关数据</div>
 
-          <div style="text-align: center" v-if="posts.length > 10">
+          <div style="text-align: center">
             <div class="laypage-main">
-              <a class="laypage-next" href="/">加载更多</a>
+              <a class="laypage-next" @click="getMorePosts()">加载更多</a>
             </div>
           </div>
 
@@ -315,6 +216,8 @@
         data: {
             user: JSON.parse(sessionStorage.getItem("user")) || {},
             data: {
+                pageIndex: 0,
+                pageSize: 10,
                 category: parseInt(window.location.search.substring(1)) || 0,
                 sort: 0,
                 keywords: ""
@@ -323,7 +226,8 @@
             posts: [],
             hotPosts: [],
             notice: {},
-            systemInfo: {}
+            systemInfo: {},
+            loading: null
         },
         created() {
             layui.cache.page = "";
@@ -339,7 +243,7 @@
                 base: "./res/mods/"
             }).extend({
                 fly: "index"
-            }).use("fly", () => {
+            }).use(["fly","laypage"], () => {
                 this.getCategory();
                 this.getPosts();
                 this.getLatestNotice();
@@ -366,11 +270,25 @@
                 )
             },
             getPosts() {
+                this.loading = layer.load(2, { shade: 0.2 });
+
                 layui.fly.api(
-                    "http://localhost:8081/post/get_posts_for_index",
+                    "http://localhost:8081/post/get_posts_for_index_by_page",
                     this.data,
                     res => {
-                        this.posts = res.data;
+                        layer.close(this.loading);
+
+                        if (this.data.pageIndex === 0) {
+                            this.posts = [];
+                        }
+
+                        if (res.data.length > 0) {
+                            this.posts = this.posts.concat(res.data);
+                        } else {
+                            this.data.pageIndex--;
+                            layer.msg("没有更多了~", {icon: 1});
+                        }
+
                     },
                     {
                         type: "get"
@@ -422,6 +340,10 @@
                     area: ['600px', '800px'],
                     content: '/notice'
                 });
+            },
+            getMorePosts() {
+                this.data.pageIndex++;
+                this.getPosts();
             }
         }
     })
