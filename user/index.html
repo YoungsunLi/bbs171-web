@@ -86,29 +86,17 @@
     <div class="fly-panel fly-panel-user" pad20>
       <div class="layui-tab layui-tab-brief" lay-filter="user">
         <ul class="layui-tab-title" id="LAY_mine">
-          <li class="layui-this" data-type="mine-jie" lay-id="index">我发的帖（<span>3</span>）</li>
-          <li data-type="collection" data-url="/collection/find/" lay-id="collection">我收藏的帖（<span>{{ stars.length }}</span>）</li>
+          <li class="layui-this" data-type="mine-jie" lay-id="index">我发的帖（<span>{{ posts.length }}</span>）</li>
+          <li id="collection" data-type="collection" data-url="/collection/find/" lay-id="collection">我收藏的帖（<span>{{ stars.length }}</span>）</li>
         </ul>
         <div class="layui-tab-content" style="padding: 20px 0;">
           <div class="layui-tab-item layui-show">
             <ul class="mine-view jie-row">
-              <li>
-                <a class="jie-title" href="../jie/detail.html" target="_blank">TODO</a>
-                <i>2017/3/14 上午8:30:00</i>
-                <a class="mine-edit" href="/jie/edit/8116">编辑</a>
-                <em>661阅/10答</em>
-              </li>
-              <li>
-                <a class="jie-title" href="../jie/detail.html" target="_blank">TODO</a>
-                <i>2017/3/14 上午8:30:00</i>
-                <a class="mine-edit" href="/jie/edit/8116">编辑</a>
-                <em>661阅/10答</em>
-              </li>
-              <li>
-                <a class="jie-title" href="../jie/detail.html" target="_blank">TODO</a>
-                <i>2017/3/14 上午8:30:00</i>
-                <a class="mine-edit" href="/jie/edit/8116">编辑</a>
-                <em>661阅/10答</em>
+              <li v-for="post in posts" :key="post.id">
+                <a class="jie-title" :href="'../jie/detail.html?' + post.id">{{ post.title }}</a>
+                <i>{{ post.datetime }}</i>
+<!--                <a class="mine-edit" href="/jie/edit/8116">编辑</a>-->
+                <em>{{ post.views }}阅/{{ post.comment }}答</em>
               </li>
             </ul>
             <div id="LAY_page"></div>
@@ -157,12 +145,27 @@
             }).extend({
                 fly: 'index'
             }).use('fly', () => {
+                if (location.href.split("#")[1] === "collection") {
+                  layui.$("#collection").click();
+                }
+                this.getPosts();
                 this.getStars();
             });
         },
         methods: {
             logout() {
                 layui.fly.logout();
+            },
+            getPosts() {
+                layui.fly.api(
+                    'http://localhost:8081/user/get_posts',
+                    res => {
+                        this.posts = res.posts;
+                    },
+                    {
+                        type: "get"
+                    }
+                );
             },
             getStars() {
                 layui.fly.api(
