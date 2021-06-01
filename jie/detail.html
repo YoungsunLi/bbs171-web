@@ -188,12 +188,13 @@
                 {{ comment.content }}
               </div>
               <div class="jieda-reply">
-                <span type="reply">
-                <i class="iconfont icon-svgmoban53"></i>
-                回复
-              </span>
+<!--                <span type="reply">-->
+<!--                <i class="iconfont icon-svgmoban53"></i>-->
+<!--                回复-->
+<!--                </span>-->
+                <span></span>
                 <div class="jieda-admin">
-                  <span @click="editComment(comment.id)" v-if="comment.from_id === user.id || user.role === 0">编辑</span>
+<!--                  <span @click="editComment(comment.id)" v-if="comment.from_id === user.id || user.role === 0">编辑</span>-->
                   <span @click="delComment(comment.id)" v-if="comment.from_id === user.id || user.role === 0">删除</span>
                 </div>
               </div>
